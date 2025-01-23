@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+	font-family: var(--font-open-sans), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, button, input, textarea, select {
+	font-family: var(--font-sora), sans-serif;
 }
 
 @layer base {

@@ -5,7 +5,11 @@ import { createUserDTO, updateUserDTO } from "./user-dto";
 
 const userRepository = {
   create: async (data: createUserDTO) => {
-    const [user] = await db.insert(userTable).values(data).returning();
+    const date = new Date().toISOString();
+    const [user] = await db
+      .insert(userTable)
+      .values({ ...data, created: date })
+      .returning();
     return user;
   },
 
@@ -25,10 +29,14 @@ const userRepository = {
     return user;
   },
 
-	update: async (id: number, data: updateUserDTO) => {
-		const [user] = await db.update(userTable).set(data).where(eq(userTable.id, id)).returning();
-		return user;
-	},
+  update: async (id: number, data: updateUserDTO) => {
+    const [user] = await db
+      .update(userTable)
+      .set(data)
+      .where(eq(userTable.id, id))
+      .returning();
+    return user;
+  },
 };
 
 export default userRepository;
