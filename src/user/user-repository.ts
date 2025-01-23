@@ -1,9 +1,10 @@
 import { db } from "@/db/db";
-import { userTable, userDataTable } from "@/db/schema";
+import { userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { createUserDTO, updateUserDTO } from "./user-dto";
 
 const userRepository = {
-  create: async (data: typeof userTable.$inferInsert) => {
+  create: async (data: createUserDTO) => {
     const [user] = await db.insert(userTable).values(data).returning();
     return user;
   },
@@ -13,7 +14,7 @@ const userRepository = {
       .select()
       .from(userTable)
       .where(eq(userTable.email, email));
-		return user;
+    return user;
   },
 
   getById: async (id: number) => {
@@ -24,19 +25,10 @@ const userRepository = {
     return user;
   },
 
-  createData: async (data: typeof userDataTable.$inferInsert) => {
-    const [userData] = await db.insert(userDataTable).values(data).returning();
-    return userData;
-  },
-
-  getDataByUserId: async (userId: number) => {
-    const [userData] = await db
-      .select()
-      .from(userDataTable)
-      .innerJoin(userTable, eq(userTable.user_data_id, userDataTable.id))
-      .where(eq(userTable.id, userId));
-    return userData;
-  },
+	update: async (id: number, data: updateUserDTO) => {
+		const [user] = await db.update(userTable).set(data).where(eq(userTable.id, id)).returning();
+		return user;
+	},
 };
 
 export default userRepository;

@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
-import userRepository from "@/user/user-repository";
+import NewUserForm from "@/components/new-user/new-user-form";
+import userDataRepository from "@/user-data/user-data-repository";
 import { redirect } from "next/navigation";
 
 export default async function () {
@@ -8,12 +9,14 @@ export default async function () {
     redirect("/signin");
   }
 
-  const data = await userRepository.getDataByUserId(session.user.id);
-  if (data["user_data"]) redirect("/dashboard");
+  const data = await userDataRepository.getByUserId(session.user.id);
+  if (data) redirect("/dashboard");
+
+	const activities = await userDataRepository.getActivities();
 
   return (
     <>
-      <input type="text" />
+			<NewUserForm activities={activities} />
     </>
   );
 }

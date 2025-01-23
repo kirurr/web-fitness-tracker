@@ -4,9 +4,6 @@ import type { Provider } from "next-auth/providers";
 import userRepository from "@/user/user-repository";
 
 declare module "next-auth" {
-  /**
-   * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
   interface Session {
     user: { id: number; } & DefaultSession["user"];
   }
