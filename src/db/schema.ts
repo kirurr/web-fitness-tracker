@@ -17,11 +17,19 @@ export const userDataTable = sqliteTable("user_data", {
 	activity_id: integer().notNull().references(() => activityTable.id)
 })
 
+export const dietTable = sqliteTable("diet", {
+  id: integer().primaryKey({ autoIncrement: true }),
+	calories: integer().notNull(),
+	water: integer().notNull(),
+});
+
 export const userTable = sqliteTable("user", {
   id: integer().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
 	email: text().notNull().unique(),
 	image_url: text(),
 	created: text().notNull().default(sql`(current_timestamp)`),
-	user_data_id: integer().references(() => userDataTable.id)
+	user_data_id: integer().references(() => userDataTable.id),
+	diet_id: integer().references(() => dietTable.id)
 });
+
