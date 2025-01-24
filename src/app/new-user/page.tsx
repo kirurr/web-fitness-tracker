@@ -25,11 +25,6 @@ export default async function () {
 }
 
 async function Wrapper() {
-	await new Promise((resolve) => {
-		setTimeout(() => {
-			resolve("foo");
-		}, 300)
-	})
   const activities = await userDataRepository.getActivities();
   return <NewUserForm activities={activities} />;
 }

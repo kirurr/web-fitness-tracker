@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import {
-  activityTable,
+  userActivityLevelTable,
   dietTable,
   userDataTable,
   userTable,
@@ -17,7 +17,7 @@ const userDataRepository = {
         .values(data)
         .returning();
 
-      const activities = await trx.select().from(activityTable);
+      const activities = await trx.select().from(userActivityLevelTable);
       const calories = calculateCalories(userData, activities);
       const water = calculateWater(userData, activities);
 
@@ -45,7 +45,7 @@ const userDataRepository = {
   },
 
   getActivities: async () => {
-    const activities = await db.select().from(activityTable);
+    const activities = await db.select().from(userActivityLevelTable);
     return activities;
   },
 };

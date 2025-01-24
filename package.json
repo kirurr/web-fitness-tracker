@@ -8,11 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "database:push": "npx drizzle-kit push",
-    "database:seed": "npx tsx ./src/db/seed.ts"
+    "database:seed": "npx tsx --env-file=.env ./src/db/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@libsql/client": "^0.14.0",
+    "@radix-ui/react-dialog": "^1.1.5",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-popover": "^1.1.5",
     "@radix-ui/react-progress": "^1.1.1",
@@ -21,6 +22,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.38.4",
     "drizzle-zod": "^0.6.1",
