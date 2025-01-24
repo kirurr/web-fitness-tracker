@@ -11,9 +11,9 @@ export default async function () {
     redirect("/signin");
   }
 
-  //const data = await userDataRepository.getByUserId(session.user.id);
-  //if (data) redirect("/dashboard");
-  //
+  const data = await userDataRepository.getByUserId(session.user.id);
+  if (data) redirect("/dashboard");
+
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
