@@ -1,18 +1,30 @@
 "use client";
-
-import { useState } from "react";
-import DashboardCalendarPopover from "./dashboard-calendar";
-import { getDietDTO } from "@/user-data/user-data-dto";
 import { getDays } from "@/day/day-actions";
-import { useServerAction } from "zsa-react";
 import { getDayDTO } from "@/day/day-dto";
-import Calories from "./calories/calories";
+import { getDietDTO } from "@/user-data/user-data-dto";
+import { createContext, useContext, useState } from "react";
+import { useServerAction } from "zsa-react";
 
-export default function DashboardWrapper({
+type DayContextType = {
+  date: Date;
+  month: Date;
+  days: getDayDTO[];
+  dayData: getDayDTO | undefined;
+  onDateChange: (date: Date) => void;
+  onMonthChange: (date: Date) => Promise<void>;
+  diet: getDietDTO;
+  isPending: boolean;
+};
+
+const DayContext = createContext<DayContextType | undefined>(undefined);
+
+export function DayContextProvider({
   diet,
+  children,
   daysData,
 }: {
   diet: getDietDTO;
+  children: React.ReactNode;
   daysData: getDayDTO[];
 }) {
   const [date, setDate] = useState<Date>(new Date());
@@ -39,22 +51,25 @@ export default function DashboardWrapper({
   }
 
   return (
-    <>
-      <DashboardCalendarPopover
-        date={date}
-        setDate={onDateChange}
-        month={month}
-        setMonth={onMonthChange}
-      />
-      {isPending && <div>Loading...</div>}
-      <div>{dayData ? JSON.stringify(dayData) : "no day entry"}</div>
-			<Calories
-				caloriesForDay={dayData ? dayData.calories_per_day : diet.calories} 
-				caloriesBurnt={dayData ? dayData.calories_burnt : 0}
-				caloriesIntake={dayData ? dayData.calories_intake : 0}
-			/>
-    </>
+    <DayContext.Provider
+      value={{
+        date,
+        month,
+        days,
+        dayData,
+        onDateChange,
+        onMonthChange,
+        diet,
+        isPending,
+      }}
+    >
+      {children}
+    </DayContext.Provider>
   );
+}
+
+export function useDayContext() {
+  return useContext(DayContext);
 }
 
 function getDay(date: Date, days: getDayDTO[]) {
