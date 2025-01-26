@@ -3,7 +3,11 @@
 import { authenticatedProcedure } from "@/lib/procedures";
 import { dayRepository } from "./day-repository";
 import { z } from "zod";
-import { createDayActivitySchema, createDaySchema, updateDaySchema } from "@/lib/schemas";
+import {
+  createDayActivitySchema,
+  createDaySchema,
+  updateDaySchema,
+} from "@/lib/schemas";
 
 export const getDays = authenticatedProcedure
   .createServerAction()
@@ -26,7 +30,10 @@ export const createDay = authenticatedProcedure
   .createServerAction()
   .input(createDaySchema)
   .handler(async ({ input, ctx }) => {
-    return await dayRepository.create({...input, user_id: ctx.session.user.id});
+    return await dayRepository.create({
+      ...input,
+      user_id: ctx.session.user.id,
+    });
   });
 
 export const getMETActivities = authenticatedProcedure
@@ -44,7 +51,14 @@ export const createDayActivity = authenticatedProcedure
 
 export const getDayActivities = authenticatedProcedure
   .createServerAction()
-  .input(z.object({id: z.number()}))
+  .input(z.object({ id: z.number() }))
   .handler(async ({ input }) => {
     return await dayRepository.getDayActivities(input.id);
+  });
+
+export const deleteDayActivity = authenticatedProcedure
+  .createServerAction()
+  .input(z.number())
+  .handler(async ({ input }) => {
+    return await dayRepository.deleteDayActivity(input);
   });

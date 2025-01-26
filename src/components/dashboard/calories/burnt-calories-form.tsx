@@ -41,6 +41,7 @@ import { z } from "zod";
 import { useServerAction } from "zsa-react";
 import { useDayContext } from "../day-context";
 import { getUserDataDTO } from "@/user-data/user-data-dto";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function BurntCaloriesForm({
   userData,
@@ -60,6 +61,8 @@ export default function BurntCaloriesForm({
       duration: "",
     },
   });
+
+	const queryClient = useQueryClient()
 
   const getMETActivitiesAction = useServerAction(getMETActivities);
   const createDayActivityAction = useServerAction(createDayActivity);
@@ -122,6 +125,8 @@ export default function BurntCaloriesForm({
     setDays((days) =>
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
+
+		queryClient.invalidateQueries({ queryKey: ["dayActivities"] })
   }
   return (
       <Form {...form}>

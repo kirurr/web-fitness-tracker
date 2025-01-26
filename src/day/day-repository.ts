@@ -1,7 +1,12 @@
 import { db } from "@/db/db";
 import { dayActivityTable, dayTable, metActivityTable } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
-import { createDayActivityDTO, createDayDTO, updateDayDTO } from "./day-dto";
+import {
+  createDayActivityDTO,
+  createDayDTO,
+  getDayActivityDTO,
+  updateDayDTO,
+} from "./day-dto";
 
 export const dayRepository = {
   getDaysByMonthAndUserId: async (monthNumber: number, userId: number) => {
@@ -18,10 +23,7 @@ export const dayRepository = {
   },
 
   create: async (data: createDayDTO) => {
-    const [day] = await db
-      .insert(dayTable)
-      .values(data)
-      .returning();
+    const [day] = await db.insert(dayTable).values(data).returning();
     return day;
   },
 
@@ -47,7 +49,10 @@ export const dayRepository = {
     const activities = await db
       .select()
       .from(dayActivityTable)
-			.leftJoin(metActivityTable, eq(dayActivityTable.met_activity_id, metActivityTable.id))
+      .leftJoin(
+        metActivityTable,
+        eq(dayActivityTable.met_activity_id, metActivityTable.id),
+      )
       .where(eq(dayActivityTable.day_id, dayId));
     return activities;
   },
@@ -58,5 +63,11 @@ export const dayRepository = {
       .values({ ...data })
       .returning();
     return dayActivity;
+  },
+
+  deleteDayActivity: async (id: number) => {
+    await db
+      .delete(dayActivityTable)
+      .where(eq(dayActivityTable.id, id));
   },
 };

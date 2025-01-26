@@ -12,8 +12,8 @@ export type updateMetActivityDTO = Partial<
 
 export type createDayActivityDTO = typeof dayActivityTable.$inferInsert;
 export type getDayActivityDTO = {
-  dayActivity: typeof dayActivityTable.$inferSelect;
-  metActivity: typeof metActivityTable.$inferSelect;
+  day_activity: typeof dayActivityTable.$inferSelect;
+  met_activity: typeof metActivityTable.$inferSelect | null;
 };
 export type updateDayActivityDTO = Partial<
   typeof dayActivityTable.$inferInsert
