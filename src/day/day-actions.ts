@@ -26,7 +26,7 @@ export const createDay = authenticatedProcedure
   .createServerAction()
   .input(createDaySchema)
   .handler(async ({ input, ctx }) => {
-    return await dayRepository.create(ctx.session.user.id, input);
+    return await dayRepository.create({...input, user_id: ctx.session.user.id});
   });
 
 export const getMETActivities = authenticatedProcedure
@@ -44,7 +44,7 @@ export const createDayActivity = authenticatedProcedure
 
 export const getDayActivities = authenticatedProcedure
   .createServerAction()
-  .input(z.number())
+  .input(z.object({id: z.number()}))
   .handler(async ({ input }) => {
-    return await dayRepository.getDayActivities(input);
+    return await dayRepository.getDayActivities(input.id);
   });

@@ -17,10 +17,10 @@ export const dayRepository = {
     return days;
   },
 
-  create: async (userId: number, data: createDayDTO) => {
+  create: async (data: createDayDTO) => {
     const [day] = await db
       .insert(dayTable)
-      .values({ ...data, user_id: userId })
+      .values(data)
       .returning();
     return day;
   },
@@ -47,6 +47,7 @@ export const dayRepository = {
     const activities = await db
       .select()
       .from(dayActivityTable)
+			.leftJoin(metActivityTable, eq(dayActivityTable.met_activity_id, metActivityTable.id))
       .where(eq(dayActivityTable.day_id, dayId));
     return activities;
   },

@@ -1,6 +1,6 @@
 "use client";
 import { getDays } from "@/day/day-actions";
-import { getDayDTO } from "@/day/day-dto";
+import { getDayActivityDTO, getDayDTO } from "@/day/day-dto";
 import { getDietDTO } from "@/user-data/user-data-dto";
 import {
   createContext,
@@ -26,7 +26,7 @@ type DayContextType = {
           id: number;
           index: number;
           month_number: number;
-          user_id: number | null;
+          user_id: number;
           calories_intake: number;
           calories_burnt: number;
           calories_per_day: number;
@@ -42,7 +42,7 @@ type DayContextType = {
         id: number;
         index: number;
         month_number: number;
-        user_id: number | null;
+        user_id: number;
         calories_intake: number;
         calories_burnt: number;
         calories_per_day: number;

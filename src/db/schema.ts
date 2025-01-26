@@ -41,7 +41,7 @@ export const dayTable = sqliteTable("day", {
   id: integer().primaryKey({ autoIncrement: true }),
   index: integer().notNull(),
 	month_number: integer().notNull(),
-	user_id: integer().references(() => userTable.id),
+	user_id: integer().notNull().references(() => userTable.id),
 	calories_intake: integer().notNull(),
 	calories_burnt: integer().notNull(),
 	calories_per_day: integer().notNull(),
@@ -57,7 +57,7 @@ export const metActivityTable = sqliteTable("met_activity", {
 
 export const dayActivityTable = sqliteTable("day_activity", {
 	id: integer().primaryKey({ autoIncrement: true }),
-	day_id: integer().references(() => dayTable.id),
-	met_activity_id: integer().references(() => metActivityTable.id),
+	day_id: integer().notNull().references(() => dayTable.id),
+	met_activity_id: integer().notNull().references(() => metActivityTable.id),
 	duration: integer().notNull(),
 });

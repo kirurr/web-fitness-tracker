@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import DashboardCalendarWrapper from "@/components/dashboard/dashboard-calendar-wrapper";
 import { DayContextProvider } from "@/components/dashboard/day-context";
+import ReactQueryProvider from "@/components/react-query-provider";
 import { dayRepository } from "@/day/day-repository";
 import { dietRepository } from "@/diet/diet-repository";
 import { redirect } from "next/navigation";
@@ -22,9 +23,11 @@ export default async function DashboardLayout({
   ]);
 
   return (
-    <DayContextProvider diet={diet.diet} daysData={daysData}>
-      <DashboardCalendarWrapper />
-      {children}
-    </DayContextProvider>
+    <ReactQueryProvider>
+      <DayContextProvider diet={diet.diet} daysData={daysData}>
+        <DashboardCalendarWrapper />
+        {children}
+      </DayContextProvider>
+    </ReactQueryProvider>
   );
 }

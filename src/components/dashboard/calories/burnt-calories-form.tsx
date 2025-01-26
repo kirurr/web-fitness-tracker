@@ -42,7 +42,7 @@ import { useServerAction } from "zsa-react";
 import { useDayContext } from "../day-context";
 import { getUserDataDTO } from "@/user-data/user-data-dto";
 
-export default function CaloriesForm({
+export default function BurntCaloriesForm({
   userData,
 }: {
   userData: getUserDataDTO;
@@ -123,8 +123,6 @@ export default function CaloriesForm({
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
   }
-	console.log(form.formState);
-
   return (
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
