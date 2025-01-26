@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { act, Dispatch, SetStateAction, useState } from "react";
-import { getActivitiesDTO } from "@/user-data/user-data-dto";
+import { Dispatch, SetStateAction, useState } from "react";
+import { getUserActivitiesLevelsDTO } from "@/user-data/user-data-dto";
 import { Button } from "../ui/button";
 
 export default function FirstForm({
@@ -28,7 +28,7 @@ export default function FirstForm({
   setData,
   setState,
 }: {
-  activities: getActivitiesDTO;
+  activities: getUserActivitiesLevelsDTO;
   data: {
     weight: string;
     height: string;

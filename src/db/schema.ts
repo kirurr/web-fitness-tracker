@@ -59,4 +59,5 @@ export const dayActivityTable = sqliteTable("day_activity", {
 	id: integer().primaryKey({ autoIncrement: true }),
 	day_id: integer().references(() => dayTable.id),
 	met_activity_id: integer().references(() => metActivityTable.id),
+	duration: integer().notNull(),
 });

@@ -39,12 +39,23 @@ export const dayRepository = {
     return metActivities;
   },
 
-	addMETActivities: async (activities: createDayActivityDTO[]) => {
-		await db.insert(dayActivityTable).values(activities);
-	},
+  addMETActivities: async (activities: createDayActivityDTO[]) => {
+    await db.insert(dayActivityTable).values(activities);
+  },
 
-	getDayActivities: async (dayId: number) => {
-		const activities = await db.select().from(dayActivityTable).where(eq(dayActivityTable.day_id, dayId));
-		return activities;
-	}
+  getDayActivities: async (dayId: number) => {
+    const activities = await db
+      .select()
+      .from(dayActivityTable)
+      .where(eq(dayActivityTable.day_id, dayId));
+    return activities;
+  },
+
+  createDayActivity: async (data: createDayActivityDTO) => {
+    const [dayActivity] = await db
+      .insert(dayActivityTable)
+      .values({ ...data })
+      .returning();
+    return dayActivity;
+  },
 };

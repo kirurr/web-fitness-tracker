@@ -2,7 +2,13 @@
 import { getDays } from "@/day/day-actions";
 import { getDayDTO } from "@/day/day-dto";
 import { getDietDTO } from "@/user-data/user-data-dto";
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { useServerAction } from "zsa-react";
 
 type DayContextType = {
@@ -14,9 +20,40 @@ type DayContextType = {
   onMonthChange: (date: Date) => Promise<void>;
   diet: getDietDTO;
   isPending: boolean;
+  setDayData: Dispatch<
+    SetStateAction<
+      | {
+          id: number;
+          index: number;
+          month_number: number;
+          user_id: number | null;
+          calories_intake: number;
+          calories_burnt: number;
+          calories_per_day: number;
+          water_per_day: number;
+          water_intake: number;
+        }
+      | undefined
+    >
+  >;
+  setDays: Dispatch<
+    SetStateAction<
+      {
+        id: number;
+        index: number;
+        month_number: number;
+        user_id: number | null;
+        calories_intake: number;
+        calories_burnt: number;
+        calories_per_day: number;
+        water_per_day: number;
+        water_intake: number;
+      }[]
+    >
+  >;
 };
 
-const DayContext = createContext<DayContextType | undefined>(undefined);
+const DayContext = createContext<DayContextType>({} as DayContextType);
 
 export function DayContextProvider({
   diet,
@@ -61,6 +98,8 @@ export function DayContextProvider({
         onMonthChange,
         diet,
         isPending,
+        setDayData,
+        setDays,
       }}
     >
       {children}

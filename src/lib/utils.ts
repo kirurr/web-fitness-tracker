@@ -1,5 +1,8 @@
 import { getMetActivityDTO } from "@/day/day-dto";
-import { getUserActivitiesLevelsDTO, getUserDataDTO } from "@/user-data/user-data-dto";
+import {
+  getUserActivitiesLevelsDTO,
+  getUserDataDTO,
+} from "@/user-data/user-data-dto";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -24,11 +27,16 @@ export function calculateCalories(
 ) {
   const age = calculateAge(data.birth_date);
   const activity = activities.find(
-    (activity) => activity.id === data.activity_id,
+    (activity) => activity.id === data.user_activity_level_id,
   )!;
   return data.sex === "male"
-    ? (10 * data.weight + 6.25 * data.height - 5 * age + 5) * activity.index
-    : (10 * data.weight + 6.25 * data.height - 5 * age - 161) * activity.index;
+    ? Math.round(
+        (10 * data.weight + 6.25 * data.height - 5 * age + 5) * activity.index,
+      )
+    : Math.round(
+        (10 * data.weight + 6.25 * data.height - 5 * age - 161) *
+          activity.index,
+      );
 }
 
 export function calculateWater(
@@ -36,16 +44,19 @@ export function calculateWater(
   activities: getUserActivitiesLevelsDTO,
 ) {
   const activity = activities.find(
-    (activity) => activity.id === data.activity_id,
+    (activity) => activity.id === data.user_activity_level_id,
   )!;
   return data.sex === "male"
-    ? data.weight * 0.04 + activity.index * 0.6
-    : data.weight * 0.03 + activity.index * 0.4;
+    ? Math.round(data.weight * 0.04 + activity.index * 0.6)
+    : Math.round(data.weight * 0.03 + activity.index * 0.4);
 }
 
 export function calculateMETCalories(
-  data: getUserDataDTO,
+  weight: number,
   activity: getMetActivityDTO,
+  duration: number,
 ) {
-  return (activity.value * 3.5 * data.weight) / 200;
+  return Math.round(
+    ((activity.value * 3.5 * weight) / 200) * (duration * 60),
+  );
 }
