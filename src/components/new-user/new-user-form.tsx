@@ -3,26 +3,24 @@
 import { createUserData } from "@/user-data/user-data-actions";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
-import { getActivitiesDTO } from "@/user-data/user-data-dto";
-import {
-  Form,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import FirstForm from "./first-form";
 import SecondForm from "./second-form";
 import { Progress } from "../ui/progress";
+import { getUserActivitiesLevelsDTO } from "@/user-data/user-data-dto";
 
 export default function NewUserForm({
   activities,
 }: {
-  activities: getActivitiesDTO;
+  activities: getUserActivitiesLevelsDTO;
 }) {
   const [state, setState] = useState(0);
   const [firstData, setFirstData] = useState<{
     weight: string;
     height: string;
-    activity_id: string;
+    user_activity_level_id: string;
   }>();
   const [secondData, setSecondData] = useState<{
     birth_date: Date;
@@ -46,30 +44,39 @@ export default function NewUserForm({
       weight: +firstData.weight,
       birth_date: secondData.birth_date.toISOString(),
       sex: secondData.sex,
-      activity_id: +firstData.activity_id,
+      user_activity_level_id: +firstData.user_activity_level_id,
     });
   }
 
   return (
     <>
-			<Progress value={state * 50} className="w-[60%]"/>
+      <Progress value={state * 50} className="w-[60%]" />
       {state === 0 && (
         <FirstForm
-					data={firstData}
+          data={firstData}
           setData={setFirstData}
           setState={setState}
           activities={activities}
         />
       )}
       {state === 1 && (
-        <SecondForm data={secondData} setData={setSecondData} setState={setState} />
+        <SecondForm
+          data={secondData}
+          setData={setSecondData}
+          setState={setState}
+        />
       )}
       {state === 2 && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-						<Button>Submit</Button>
-					</form>
-					<Button variant={"outline"} onClick={() => setState(state => state - 1)}>Back</Button>
+            <Button>Submit</Button>
+          </form>
+          <Button
+            variant={"outline"}
+            onClick={() => setState((state) => state - 1)}
+          >
+            Back
+          </Button>
         </Form>
       )}
     </>

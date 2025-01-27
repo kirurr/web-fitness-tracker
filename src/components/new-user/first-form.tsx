@@ -32,14 +32,14 @@ export default function FirstForm({
   data: {
     weight: string;
     height: string;
-    activity_id: string;
+    user_activity_level_id: string;
   } | undefined;
   setData: Dispatch<
     SetStateAction<
       | {
           weight: string;
           height: string;
-          activity_id: string;
+          user_activity_level_id: string;
         }
       | undefined
     >
@@ -48,14 +48,14 @@ export default function FirstForm({
 }) {
   const [activity, setActivity] = useState(
     data
-      ? activities.find((item) => item.id.toString() === data.activity_id)!
+      ? activities.find((item) => item.id.toString() === data.user_activity_level_id)!
       : activities[0],
   );
 
   const schema = z.object({
     weight: z.string().min(1, "Weight is required"),
     height: z.string().min(1, "Height is required"),
-    activity_id: z.string(),
+    user_activity_level_id: z.string(),
   });
 
   const form = useForm<z.infer<typeof schema>>({
@@ -63,7 +63,7 @@ export default function FirstForm({
     defaultValues: {
       weight: data ? data.weight : "",
       height: data ? data.height : "",
-      activity_id: data ? data.activity_id.toString() : activity.id.toString(),
+      user_activity_level_id: data ? data.user_activity_level_id.toString() : activity.id.toString(),
     },
   });
 
@@ -108,7 +108,7 @@ export default function FirstForm({
         </div>
         <FormField
           control={form.control}
-          name="activity_id"
+          name="user_activity_level_id"
           rules={{ required: true }}
           render={({ field }) => (
             <FormItem>

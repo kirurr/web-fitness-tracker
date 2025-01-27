@@ -19,12 +19,6 @@ export const userDataTable = sqliteTable("user_data", {
     .references(() => userActivityLevelTable.id),
 });
 
-export const dietTable = sqliteTable("diet", {
-  id: integer().primaryKey({ autoIncrement: true }),
-  calories: integer().notNull(),
-  water: integer().notNull(),
-});
-
 export const userTable = sqliteTable("user", {
   id: integer().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
@@ -34,30 +28,47 @@ export const userTable = sqliteTable("user", {
     .notNull()
     .default(sql`(current_timestamp)`),
   user_data_id: integer().references(() => userDataTable.id),
-  diet_id: integer().references(() => dietTable.id),
+});
+
+export const dietTable = sqliteTable("diet", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  user_id: integer()
+    .notNull()
+    .references(() => userTable.id),
+  calories: integer().notNull(),
+  water: integer().notNull(),
+  created: text().notNull(),
+  expired: text(),
 });
 
 export const dayTable = sqliteTable("day", {
   id: integer().primaryKey({ autoIncrement: true }),
   index: integer().notNull(),
-	month_number: integer().notNull(),
-	user_id: integer().notNull().references(() => userTable.id),
-	calories_intake: integer().notNull(),
-	calories_burnt: integer().notNull(),
-	calories_per_day: integer().notNull(),
-	water_per_day: integer().notNull(),
-	water_intake: integer().notNull(),
+  month_number: integer().notNull(),
+  diet_id: integer()
+    .notNull()
+    .references(() => dietTable.id),
+  user_id: integer()
+    .notNull()
+    .references(() => userTable.id),
+  calories_intake: integer().notNull(),
+  calories_burnt: integer().notNull(),
+  water_intake: integer().notNull(),
 });
 
 export const metActivityTable = sqliteTable("met_activity", {
-	id: integer().primaryKey({ autoIncrement: true }),
-	name: text().notNull().unique(),
-	value: integer().notNull(),
+  id: integer().primaryKey({ autoIncrement: true }),
+  name: text().notNull().unique(),
+  value: integer().notNull(),
 });
 
 export const dayActivityTable = sqliteTable("day_activity", {
-	id: integer().primaryKey({ autoIncrement: true }),
-	day_id: integer().notNull().references(() => dayTable.id),
-	met_activity_id: integer().notNull().references(() => metActivityTable.id),
-	duration: integer().notNull(),
+  id: integer().primaryKey({ autoIncrement: true }),
+  day_id: integer()
+    .notNull()
+    .references(() => dayTable.id),
+  met_activity_id: integer()
+    .notNull()
+    .references(() => metActivityTable.id),
+  duration: integer().notNull(),
 });

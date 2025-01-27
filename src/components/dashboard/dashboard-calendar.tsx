@@ -1,4 +1,3 @@
-"use client";
 import { DayContentProps } from "react-day-picker";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";

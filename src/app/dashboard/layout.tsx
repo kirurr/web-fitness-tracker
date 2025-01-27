@@ -14,7 +14,7 @@ export default async function DashboardLayout({
   const session = await auth();
   if (!session) redirect("/signin");
 
-  const [diet, daysData] = await Promise.all([
+  const [diets, daysData] = await Promise.all([
     dietRepository.getByUserId(session.user.id),
     dayRepository.getDaysByMonthAndUserId(
       new Date().getMonth(),
@@ -24,7 +24,10 @@ export default async function DashboardLayout({
 
   return (
     <ReactQueryProvider>
-      <DayContextProvider diet={diet.diet} daysData={daysData}>
+      <DayContextProvider
+        userDiets={diets}
+        days={daysData}
+      >
         <DashboardCalendarWrapper />
         {children}
       </DayContextProvider>

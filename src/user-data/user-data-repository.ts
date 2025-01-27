@@ -21,14 +21,20 @@ const userDataRepository = {
       const calories = calculateCalories(userData, activities);
       const water = calculateWater(userData, activities);
 
-      const [diet] = await trx
+      const date = new Date().toDateString();
+      await trx
         .insert(dietTable)
-        .values({ calories, water })
+        .values({
+					calories,
+					water,
+					created: date,
+					user_id: user_id
+				})
         .returning();
 
       await trx
         .update(userTable)
-        .set({ user_data_id: userData.id, diet_id: diet.id })
+        .set({ user_data_id: userData.id })
         .where(eq(userTable.id, user_id));
       return userData;
     });

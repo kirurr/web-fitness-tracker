@@ -18,6 +18,7 @@ export const createDaySchema = z.object({
   calories_intake: z.number().int(),
   calories_per_day: z.number().int(),
   water_per_day: z.number(),
+	diet_id: z.number(),
   water_intake: z.number().int(),
 });
 

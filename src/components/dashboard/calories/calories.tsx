@@ -8,7 +8,7 @@ import Activities from "./activities";
 export default function Calories({ userData }: { userData: getUserDataDTO }) {
   const { dayData, diet } = useDayContext();
 
-  const caloriesForDay = dayData ? dayData.calories_per_day : diet.calories;
+  const caloriesForDay = diet.calories;
   const caloriesBurnt = dayData ? dayData.calories_burnt : 0;
   const caloriesIntake = dayData ? dayData.calories_intake : 0;
 
