@@ -4,6 +4,7 @@ import { getUserDataDTO } from "@/user-data/user-data-dto";
 import { useDayContext } from "../day-context";
 import BurntCaloriesForm from "./burnt-calories-form";
 import Activities from "./activities";
+import Meals from "./meals";
 
 export default function Calories({ userData }: { userData: getUserDataDTO }) {
   const { dayData, diet } = useDayContext();
@@ -20,6 +21,7 @@ export default function Calories({ userData }: { userData: getUserDataDTO }) {
       <p>Calories intake: {caloriesIntake}</p>
       <BurntCaloriesForm userData={userData} />
       <Activities userData={userData} />
+			<Meals />
     </div>
   );
 }

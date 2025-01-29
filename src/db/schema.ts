@@ -72,3 +72,23 @@ export const dayActivityTable = sqliteTable("day_activity", {
     .references(() => metActivityTable.id),
   duration: integer().notNull(),
 });
+
+export const fatsecretAPITable = sqliteTable("fatsecret_api", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  user_id: integer()
+    .notNull()
+    .references(() => userTable.id),
+	expires_at: text().notNull(),
+	token: text().notNull(),
+});
+
+export const mealTable = sqliteTable("meal", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  day_id: integer()
+    .notNull()
+    .references(() => dayTable.id),
+	name: text().notNull(),
+  calories: integer().notNull(),
+	weight: integer().notNull(),
+  created: text().notNull(),
+});

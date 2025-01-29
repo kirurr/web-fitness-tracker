@@ -1,4 +1,4 @@
-import { dayActivityTable, dayTable, metActivityTable } from "@/db/schema";
+import { dayActivityTable, dayTable, mealTable, metActivityTable } from "@/db/schema";
 
 export type getDayDTO = typeof dayTable.$inferSelect;
 export type createDayDTO = typeof dayTable.$inferInsert;
@@ -18,3 +18,4 @@ export type getDayActivityDTO = {
 export type updateDayActivityDTO = Partial<
   typeof dayActivityTable.$inferInsert
 >;
+

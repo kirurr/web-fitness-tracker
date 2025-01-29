@@ -56,7 +56,21 @@ export function calculateMETCalories(
   activity: getMetActivityDTO,
   duration: number,
 ) {
-  return Math.round(
-    ((activity.value * 3.5 * weight) / 200) * (duration * 60),
-  );
+  return Math.round(((activity.value * 3.5 * weight) / 200) * (duration * 60));
+}
+
+export function getCaloriesAndPortionFromMeal(description: string) {
+  const regex = /(?<=Per\s)(\d+)|(?<=Calories:\s)(\d+)/g;
+
+  const matches = description.match(regex);
+  if (!matches) throw new Error("Invalid meal description");
+  return { portion: matches[0], calories: matches[1] };
+}
+
+export function calculateMealCalories(
+  calories: number,
+  portion: number,
+  weight_consumed: number,
+) {
+  return Math.round((calories / portion) * weight_consumed);
 }

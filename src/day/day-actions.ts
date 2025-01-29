@@ -62,3 +62,4 @@ export const deleteDayActivity = authenticatedProcedure
   .handler(async ({ input }) => {
     return await dayRepository.deleteDayActivity(input);
   });
+

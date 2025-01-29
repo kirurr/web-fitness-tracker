@@ -1,4 +1,9 @@
-import { dayActivityTable, dayTable, userDataTable } from "@/db/schema";
+import {
+  dayActivityTable,
+  dayTable,
+  mealTable,
+  userDataTable,
+} from "@/db/schema";
 import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -18,7 +23,7 @@ export const createDaySchema = z.object({
   calories_intake: z.number().int(),
   calories_per_day: z.number().int(),
   water_per_day: z.number(),
-	diet_id: z.number(),
+  diet_id: z.number(),
   water_intake: z.number().int(),
 });
 
@@ -34,7 +39,7 @@ export const createDayFormSchema = z.object({
 
 export const updateDaySchema = createUpdateSchema(dayTable);
 export const updateDayFormSchema = z.object({
-	id: z.string(),
+  id: z.string(),
   index: z.string().optional(),
   month_number: z.string().optional(),
   calories_burnt: z.string().optional(),
@@ -48,4 +53,14 @@ export const createDayActivitySchema = createInsertSchema(dayActivityTable);
 export const createDayActivityFormSchema = z.object({
   met_activity_id: z.string(),
   duration: z.string(),
+});
+
+export const createMealSchema = createInsertSchema(mealTable);
+export const createMealFormSchema = z.object({
+  food: z.object({
+    food_name: z.string(),
+    food_description: z.string(),
+    food_id: z.string(),
+  }),
+  weight: z.number(),
 });

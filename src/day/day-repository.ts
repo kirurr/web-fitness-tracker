@@ -1,9 +1,10 @@
 import { db } from "@/db/db";
-import { dayActivityTable, dayTable, metActivityTable } from "@/db/schema";
+import { dayActivityTable, dayTable, mealTable, metActivityTable } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import {
   createDayActivityDTO,
   createDayDTO,
+  createMealDTO,
   getDayActivityDTO,
   updateDayDTO,
 } from "./day-dto";
@@ -70,4 +71,17 @@ export const dayRepository = {
       .delete(dayActivityTable)
       .where(eq(dayActivityTable.id, id));
   },
+
+	getMealsByDayId: async (dayId: number) => {
+		const meals = await db
+			.select()
+			.from(mealTable)
+			.where(eq(mealTable.day_id, dayId));
+		return meals;
+	},
+
+	createMeal: async (data: createMealDTO) => {
+		const [meal] = await db.insert(mealTable).values(data).returning();
+		return meal;
+	},
 };
