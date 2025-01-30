@@ -1,6 +1,5 @@
 import { useServerActionQuery } from "@/lib/server-action-hooks";
 import { useDayContext } from "../day-context";
-import SelectMealForm from "./select-meal-form";
 import { deleteMeal, getMealsByDayId, updateDay } from "@/day/day-actions";
 import { getMealDTO } from "@/fatsecret/fatsecret-dto";
 import { useForm } from "react-hook-form";
@@ -13,7 +12,7 @@ import { LoaderCircle, X } from "lucide-react";
 
 export default function Meals() {
   const { dayData } = useDayContext();
-  const { data, isLoading } = useServerActionQuery(getMealsByDayId, {
+  const { data, isFetching } = useServerActionQuery(getMealsByDayId, {
     enabled: !!dayData,
     input: dayData ? dayData.id : 0,
     queryKey: ["dayMeals", dayData],
@@ -23,9 +22,9 @@ export default function Meals() {
   if (!dayData) return null;
   if (!data) return null;
 
-  if (isLoading)
+  if (isFetching)
     return (
-      <div className="animate-spin">
+      <div className="animate-spin size-fit">
         <LoaderCircle />
       </div>
     );

@@ -17,7 +17,7 @@ import { QueryClient, useQueryClient } from "@tanstack/react-query";
 
 export default function Activities({ userData }: { userData: getUserDataDTO }) {
   const { dayData } = useDayContext();
-  const { data, isLoading } = useServerActionQuery(getDayActivities, {
+  const { data, isFetching } = useServerActionQuery(getDayActivities, {
     enabled: !!dayData,
     input: {
       id: dayData ? dayData.id : 0,
@@ -29,7 +29,7 @@ export default function Activities({ userData }: { userData: getUserDataDTO }) {
   if (!dayData) return null;
   if (!data) return null;
 
-  if (isLoading)
+  if (isFetching)
     return (
       <div className="animate-spin">
         <LoaderCircle />

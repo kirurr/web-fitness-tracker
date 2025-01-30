@@ -76,9 +76,9 @@ const fatsecretRepository = {
     });
 
     const response = await fetch(
-      "https://platform.fatsecret.com/rest/server.api?" + params.toString(),
+      "https://platform.fatsecret.com/rest/foods/search/v1?" + params.toString(),
       {
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -86,7 +86,7 @@ const fatsecretRepository = {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch fatsecret token");
+      throw new Error("Failed to fetch meals");
     }
 
     const meals: {foods: Foods} = await response.json();

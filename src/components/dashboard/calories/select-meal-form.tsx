@@ -44,7 +44,7 @@ import { useDayContext } from "../day-context";
 export default function SelectMealForm() {
   const [search, setSearch] = useState("");
 
-  const { data, isLoading } = useServerActionQuery(findMeal, {
+  const { data, isLoading, error, isError } = useServerActionQuery(findMeal, {
     input: search,
     queryKey: ["meal", search],
     enabled: !!search,
@@ -172,6 +172,11 @@ export default function SelectMealForm() {
                         isLoading ? "overflow-hidden" : "overflow-auto",
                       )}
                     >
+											{!isLoading && isError && (
+												<CommandEmpty>
+													{error?.message}
+												</CommandEmpty>
+											)}
                       {isLoading && !data && (
                         <CommandEmpty>
                           <div className="flex size-full animate-spin items-center justify-center">
@@ -179,7 +184,7 @@ export default function SelectMealForm() {
                           </div>
                         </CommandEmpty>
                       )}
-                      {!isLoading && !data && (
+                      {!isLoading && !data && !isError && (
                         <CommandEmpty>Start typing to search...</CommandEmpty>
                       )}
                       {data && <CommandEmpty>No meal found.</CommandEmpty>}
