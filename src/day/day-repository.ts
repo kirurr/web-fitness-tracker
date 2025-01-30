@@ -1,11 +1,15 @@
 import { db } from "@/db/db";
-import { dayActivityTable, dayTable, mealTable, metActivityTable } from "@/db/schema";
+import {
+  dayActivityTable,
+  dayTable,
+  mealTable,
+  metActivityTable,
+} from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import {
   createDayActivityDTO,
   createDayDTO,
   createMealDTO,
-  getDayActivityDTO,
   updateDayDTO,
 } from "./day-dto";
 
@@ -67,21 +71,23 @@ export const dayRepository = {
   },
 
   deleteDayActivity: async (id: number) => {
-    await db
-      .delete(dayActivityTable)
-      .where(eq(dayActivityTable.id, id));
+    await db.delete(dayActivityTable).where(eq(dayActivityTable.id, id));
   },
 
-	getMealsByDayId: async (dayId: number) => {
-		const meals = await db
-			.select()
-			.from(mealTable)
-			.where(eq(mealTable.day_id, dayId));
-		return meals;
-	},
+  getMealsByDayId: async (dayId: number) => {
+    const meals = await db
+      .select()
+      .from(mealTable)
+      .where(eq(mealTable.day_id, dayId));
+    return meals;
+  },
 
-	createMeal: async (data: createMealDTO) => {
-		const [meal] = await db.insert(mealTable).values(data).returning();
-		return meal;
-	},
+  createMeal: async (data: createMealDTO) => {
+    const [meal] = await db.insert(mealTable).values(data).returning();
+    return meal;
+  },
+
+  deleteMeal: async (id: number) => {
+    await db.delete(mealTable).where(eq(mealTable.id, id));
+  },
 };

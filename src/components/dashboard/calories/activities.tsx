@@ -22,7 +22,7 @@ export default function Activities({ userData }: { userData: getUserDataDTO }) {
     input: {
       id: dayData ? dayData.id : 0,
     },
-    queryKey: ["dayActivities"],
+    queryKey: ["dayActivities", dayData],
   });
 
   const queryClient = useQueryClient();
@@ -60,7 +60,7 @@ function Activity({
   weight: number;
   queryClient: QueryClient;
 }) {
-  const { dayData, setDayData, setDays } = useDayContext();
+  const { dayData, setDayData, setDaysData: setDays } = useDayContext();
   const form = useForm();
 
   const deleteDayActivityAction = useServerAction(deleteDayActivity);

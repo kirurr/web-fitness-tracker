@@ -23,15 +23,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { createMeal, createDay, updateDay } from "@/day/day-actions";
 import { findMeal } from "@/fatsecret/fatsecret-actions";
 import { createMealFormSchema } from "@/lib/schemas";
 import { useServerActionQuery } from "@/lib/server-action-hooks";
-import { cn } from "@/lib/utils";
+import {
+  calculateMealCalories,
+  cn,
+  getCaloriesAndPortionFromMeal,
+} from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useServerAction } from "zsa-react";
+import { useDayContext } from "../day-context";
 
 export default function SelectMealForm() {
   const [search, setSearch] = useState("");
@@ -41,25 +49,75 @@ export default function SelectMealForm() {
     queryKey: ["meal", search],
     enabled: !!search,
   });
+  const queryClient = useQueryClient();
+  queryClient.cancelQueries({ queryKey: ["meal", search] });
 
   const form = useForm<z.infer<typeof createMealFormSchema>>({
     resolver: zodResolver(createMealFormSchema),
     defaultValues: {
-      food: {
-        food_name: "",
-        food_description: "",
-        food_id: "",
-      },
-      weight: 0,
+      weight: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof createMealFormSchema>) {
-    console.log(data);
-  }
+  const { dayData, setDayData, setDaysData, diet, month, date } = useDayContext();
 
-  console.log(search);
-  if (data) console.log(data);
+  const createDayAction = useServerAction(createDay);
+  const updateDayAction = useServerAction(updateDay);
+  const createMealAction = useServerAction(createMeal);
+
+  async function onSubmit(data: z.infer<typeof createMealFormSchema>) {
+    let day = dayData;
+    if (!day) {
+      const [data, err] = await createDayAction.execute({
+        diet_id: diet.id,
+        month_number: month.getMonth(),
+        index: date.getDate(),
+        calories_burnt: 0,
+        calories_intake: 0,
+        calories_per_day: diet.calories,
+        water_per_day: diet.water,
+        water_intake: 0,
+      });
+      if (err) throw err;
+      day = data;
+      setDaysData((days) => [...days, data]);
+    }
+
+    const { portion, calories } = getCaloriesAndPortionFromMeal(
+      data.food.food_description,
+    );
+
+    const [_meal, mealErr] = await createMealAction.execute({
+      name: data.food.food_name,
+      weight: +data.weight,
+      calories: +calories,
+      portion: +portion,
+      day_id: day.id,
+      created: new Date().toDateString(),
+    });
+		if (mealErr) throw mealErr;
+
+
+    const caloriesGained = calculateMealCalories(
+      +calories,
+      +portion,
+      +data.weight,
+    );
+
+		const newCalories = day.calories_intake + caloriesGained
+    const [updateDayData, updateDayErr] = await updateDayAction.execute({
+      id: day.id,
+			calories_intake: newCalories
+    });
+    if (updateDayErr) throw updateDayErr;
+
+    setDayData(updateDayData);
+    setDaysData((days) =>
+      days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
+    );
+
+    queryClient.invalidateQueries({ queryKey: ["dayMeals"] });
+  }
 
   return (
     <Form {...form}>
@@ -82,13 +140,7 @@ export default function SelectMealForm() {
                         !field.value && "text-muted-foreground",
                       )}
                     >
-                      {field.value
-                        ? data
-                          ? data.food.find(
-                              (meal) => meal.food_id === field.value.food_id,
-                            )?.food_name
-                          : "Select meal"
-                        : "Select meal"}
+                      {field.value ? field.value.food_name : "Select meal"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
@@ -115,7 +167,11 @@ export default function SelectMealForm() {
                       onValueChange={(e) => setSearch(e)}
                       placeholder="Search meal..."
                     />
-                    <CommandList>
+                    <CommandList
+                      className={cn(
+                        isLoading ? "overflow-hidden" : "overflow-auto",
+                      )}
+                    >
                       {isLoading && !data && (
                         <CommandEmpty>
                           <div className="flex size-full animate-spin items-center justify-center">
@@ -141,7 +197,8 @@ export default function SelectMealForm() {
                               <Check
                                 className={cn(
                                   "ml-auto",
-                                  meal.food_id === field.value.food_id
+                                  field.value &&
+                                    meal.food_id === field.value.food_id
                                     ? "opacity-100"
                                     : "opacity-0",
                                 )}
@@ -163,13 +220,9 @@ export default function SelectMealForm() {
           rules={{ required: true }}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration</FormLabel>
+              <FormLabel>Weight</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  {...field}
-                  placeholder="Enter weight in grams"
-                />
+                <Input {...field} placeholder="Enter weight in grams" />
               </FormControl>
               <FormDescription>Enter weight in grams</FormDescription>
               <FormMessage />

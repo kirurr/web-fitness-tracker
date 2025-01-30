@@ -88,6 +88,7 @@ export const mealTable = sqliteTable("meal", {
     .notNull()
     .references(() => dayTable.id),
 	name: text().notNull(),
+	portion: integer().notNull(),
   calories: integer().notNull(),
 	weight: integer().notNull(),
   created: text().notNull(),

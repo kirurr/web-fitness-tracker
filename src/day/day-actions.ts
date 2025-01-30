@@ -6,6 +6,7 @@ import { z } from "zod";
 import {
   createDayActivitySchema,
   createDaySchema,
+  createMealSchema,
   updateDaySchema,
 } from "@/lib/schemas";
 
@@ -63,3 +64,23 @@ export const deleteDayActivity = authenticatedProcedure
     return await dayRepository.deleteDayActivity(input);
   });
 
+export const getMealsByDayId = authenticatedProcedure
+  .createServerAction()
+  .input(z.number())
+  .handler(async ({ input }) => {
+    return await dayRepository.getMealsByDayId(input);
+  });
+
+export const createMeal = authenticatedProcedure
+  .createServerAction()
+  .input(createMealSchema)
+  .handler(async ({ input }) => {
+    return await dayRepository.createMeal(input);
+  });
+
+export const deleteMeal = authenticatedProcedure
+  .createServerAction()
+  .input(z.number())
+  .handler(async ({ input }) => {
+    return await dayRepository.deleteMeal(input);
+  });

@@ -62,5 +62,5 @@ export const createMealFormSchema = z.object({
     food_description: z.string(),
     food_id: z.string(),
   }),
-  weight: z.number(),
+  weight: z.string(),
 });

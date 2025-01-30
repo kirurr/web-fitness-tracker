@@ -51,7 +51,7 @@ export default function BurntCaloriesForm({
   const [activities, setActivities] = useState<getMetActivityDTO[]>([]);
   const [_popoverOpen, setPopoverOpen] = useState(false);
 
-  const { dayData, setDayData, setDays, diet, month, date } =
+  const { dayData, setDayData, setDaysData: setDays, diet, month, date } =
     useDayContext();
 
   const form = useForm<z.infer<typeof createDayActivityFormSchema>>({

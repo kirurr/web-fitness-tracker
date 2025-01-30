@@ -16,14 +16,14 @@ import { useServerAction } from "zsa-react";
 type DayContextType = {
   date: Date;
   month: Date;
-  days: getDayDTO[];
+  daysData: getDayDTO[];
   dayData: getDayDTO | undefined;
   onDateChange: (date: Date) => void;
   onMonthChange: (date: Date) => Promise<void>;
   diet: getDietDTO;
   isPending: boolean;
   setDayData: Dispatch<SetStateAction<getDayDTO | undefined>>;
-  setDays: Dispatch<SetStateAction<getDayDTO[]>>;
+  setDaysData: Dispatch<SetStateAction<getDayDTO[]>>;
 };
 
 const DayContext = createContext<DayContextType>({} as DayContextType);
@@ -93,14 +93,14 @@ export function DayContextProvider({
       value={{
         date,
         month,
-        days: daysData,
+        daysData,
         dayData,
         onDateChange,
         onMonthChange,
-        diet: diet,
+        diet,
         isPending,
         setDayData,
-        setDays: setDaysData,
+        setDaysData,
       }}
     >
       {children}
