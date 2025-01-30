@@ -96,6 +96,7 @@ export default function BurntCaloriesForm({
       });
       if (err) throw err;
       day = data;
+			setDays((days) => [...days, data]);
     }
 
     const [_dayActivityData, dayActivityErr] =
