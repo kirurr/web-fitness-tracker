@@ -24,13 +24,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { createMeal, createDay, updateDay } from "@/day/day-actions";
-import { findMeal } from "@/fatsecret/fatsecret-actions";
+import { findMeal, getMealById } from "@/fatsecret/fatsecret-actions";
 import { createMealFormSchema } from "@/lib/schemas";
 import { useServerActionQuery } from "@/lib/server-action-hooks";
 import {
   calculateMealCalories,
   cn,
-  getCaloriesAndPortionFromMeal,
 } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -59,23 +58,26 @@ export default function SelectMealForm() {
     },
   });
 
-  const { dayData, setDayData, setDaysData, diet, month, date } = useDayContext();
+  const { dayData, setDayData, setDaysData, diet, month, date } =
+    useDayContext();
 
   const createDayAction = useServerAction(createDay);
   const updateDayAction = useServerAction(updateDay);
+
   const createMealAction = useServerAction(createMeal);
+	const getMealByIdAction = useServerAction(getMealById);
 
   async function onSubmit(data: z.infer<typeof createMealFormSchema>) {
     let day = dayData;
     if (!day) {
       const [data, err] = await createDayAction.execute({
-        diet_id: diet.id,
+        diet_id: diet.diet.id,
         month_number: month.getMonth(),
         index: date.getDate(),
         calories_burnt: 0,
         calories_intake: 0,
-        calories_per_day: diet.calories,
-        water_per_day: diet.water,
+        calories_per_day: diet.diet.calories,
+        water_per_day: diet.diet.water,
         water_intake: 0,
       });
       if (err) throw err;
@@ -83,31 +85,34 @@ export default function SelectMealForm() {
       setDaysData((days) => [...days, data]);
     }
 
-    const { portion, calories } = getCaloriesAndPortionFromMeal(
-      data.food.food_description,
-    );
+		const [mealData, mealDataErr] = await getMealByIdAction.execute(data.food.food_id);
+
+		if (mealDataErr) throw mealDataErr;
+
+		const numberOfUnits = +mealData.servings.serving[0].number_of_units;
+		const calories = +mealData.servings.serving[0].calories;
+		const portion = +mealData.servings.serving[0].metric_serving_amount * numberOfUnits;
 
     const [_meal, mealErr] = await createMealAction.execute({
       name: data.food.food_name,
       weight: +data.weight,
-      calories: +calories,
-      portion: +portion,
+      calories: calories,
+      portion: portion,
       day_id: day.id,
       created: new Date().toDateString(),
     });
-		if (mealErr) throw mealErr;
-
+    if (mealErr) throw mealErr;
 
     const caloriesGained = calculateMealCalories(
-      +calories,
-      +portion,
+      calories,
+      portion,
       +data.weight,
     );
 
-		const newCalories = day.calories_intake + caloriesGained
+    const newCalories = day.calories_intake + caloriesGained;
     const [updateDayData, updateDayErr] = await updateDayAction.execute({
       id: day.id,
-			calories_intake: newCalories
+      calories_intake: newCalories,
     });
     if (updateDayErr) throw updateDayErr;
 
@@ -172,11 +177,9 @@ export default function SelectMealForm() {
                         isLoading ? "overflow-hidden" : "overflow-auto",
                       )}
                     >
-											{!isLoading && isError && (
-												<CommandEmpty>
-													{error?.message}
-												</CommandEmpty>
-											)}
+                      {!isLoading && isError && (
+                        <CommandEmpty>{error?.message}</CommandEmpty>
+                      )}
                       {isLoading && !data && (
                         <CommandEmpty>
                           <div className="flex size-full animate-spin items-center justify-center">

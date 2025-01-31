@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { dietTable } from "@/db/schema";
+import { dietTable, goalTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export const dietRepository = {
@@ -7,6 +7,7 @@ export const dietRepository = {
     const diets = await db
       .select()
       .from(dietTable)
+			.leftJoin(goalTable, eq(dietTable.goal_id, goalTable.id))
       .where(eq(dietTable.user_id, userId));
     return diets;
   },
@@ -15,7 +16,15 @@ export const dietRepository = {
     const [diet] = await db
       .select()
       .from(dietTable)
+			.leftJoin(goalTable, eq(dietTable.goal_id, goalTable.id))
       .where(eq(dietTable.id, id));
     return diet;
   },
+
+	getGoals: async () => {
+		const goals = await db
+			.select()
+			.from(goalTable)
+		return goals;
+	},
 };

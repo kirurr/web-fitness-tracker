@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import {
   createFatsecretTokenDTO,
   Foods,
+  SearchFood,
   updateFatsecretTokenDTO,
 } from "./fatsecret-dto";
 import { auth } from "@/auth";
@@ -76,7 +77,8 @@ const fatsecretRepository = {
     });
 
     const response = await fetch(
-      "https://platform.fatsecret.com/rest/foods/search/v1?" + params.toString(),
+      "https://platform.fatsecret.com/rest/foods/search/v1?" +
+        params.toString(),
       {
         method: "GET",
         headers: {
@@ -88,14 +90,44 @@ const fatsecretRepository = {
     if (!response.ok) {
       throw new Error("Failed to fetch meals");
     }
-		const result = await response.json();
+    const result = await response.json();
 
-		if (result.error) {
-			throw new Error(JSON.stringify(result.error));
-		}
+    if (result.error) {
+      throw new Error(JSON.stringify(result.error));
+    }
 
-    const meals: {foods: Foods} = result;
+    const meals: { foods: Foods } = result;
     return meals.foods;
+  },
+
+  getMealById: async (token: string, id: string) => {
+    const params = new URLSearchParams({
+      method: "food.get.v4",
+      format: "json",
+      food_id: id,
+    });
+
+    const response = await fetch(
+      "https://platform.fatsecret.com/rest/food/v4?" + params.toString(),
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch meal");
+    }
+    const result = await response.json();
+
+    if (result.error) {
+      throw new Error(JSON.stringify(result.error));
+    }
+
+    const meal = result as SearchFood;
+    return meal.food;
   },
 };
 

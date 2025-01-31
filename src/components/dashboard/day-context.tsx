@@ -40,7 +40,7 @@ export function DayContextProvider({
   const [month, setMonth] = useState<Date>(new Date());
   const [daysData, setDaysData] = useState<getDayDTO[]>(days);
   const [diet, setDiet] = useState<getDietDTO>(
-    userDiets.find((diet) => diet.expired === null)!,
+    userDiets.find((diet) => diet.diet.expired === null)!,
   );
   const [dayData, setDayData] = useState<getDayDTO | undefined>(
     getDay(date, daysData),
@@ -57,12 +57,12 @@ export function DayContextProvider({
 		}
     setDate(date);
 
-    if (date.getTime() < new Date(diet.created).getTime()) {
+    if (date.getTime() < new Date(diet.diet.created).getTime()) {
       const newDiet = userDiets.find((item) => {
-        if (!item.expired) return false;
-        const dietCreatedTimestamp = new Date(item.created).getTime();
-        const dietExpiredTimestamp = new Date(item.expired).getTime();
-        const currentDietCreatedTimestamp = new Date(diet?.created).getTime();
+        if (!item.diet.expired) return false;
+        const dietCreatedTimestamp = new Date(item.diet.created).getTime();
+        const dietExpiredTimestamp = new Date(item.diet.expired).getTime();
+        const currentDietCreatedTimestamp = new Date(diet?.diet.created).getTime();
         return (
           currentDietCreatedTimestamp <= dietExpiredTimestamp &&
           currentDietCreatedTimestamp > dietCreatedTimestamp
@@ -70,12 +70,12 @@ export function DayContextProvider({
       });
       if (newDiet) setDiet(newDiet);
     } else {
-      setDiet(userDiets.find((diet) => diet.expired === null)!);
+      setDiet(userDiets.find((diet) => diet.diet.expired === null)!);
     }
 
     if (dayData === undefined) return;
 
-    if (dayData?.diet_id !== diet.id) {
+    if (dayData?.diet_id !== diet.diet.id) {
       const [newDiet, err] = await getNewDietAction.execute(dayData!.diet_id);
       if (err) throw err;
       setDiet(newDiet);

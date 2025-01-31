@@ -3,18 +3,40 @@
 import { createUserData } from "@/user-data/user-data-actions";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import FirstForm from "./first-form";
 import SecondForm from "./second-form";
 import { Progress } from "../ui/progress";
-import { getUserActivitiesLevelsDTO } from "@/user-data/user-data-dto";
+import {
+  getGoalDTO,
+  getUserActivitiesLevelsDTO,
+} from "@/user-data/user-data-dto";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 export default function NewUserForm({
   activities,
+  goals,
 }: {
   activities: getUserActivitiesLevelsDTO;
+  goals: getGoalDTO[];
 }) {
   const [state, setState] = useState(0);
   const [firstData, setFirstData] = useState<{
@@ -35,16 +57,27 @@ export default function NewUserForm({
       console.error(err);
     },
   });
-  const form = useForm();
+  const schema = z.object({
+    goalId: z.string(),
+  });
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+		defaultValues:{
+			goalId: ""
+		}
+  });
 
-  async function onSubmit() {
+  async function onSubmit(data: z.infer<typeof schema>) {
     if (!firstData || !secondData) throw Error();
     await execute({
-      height: +firstData.height,
-      weight: +firstData.weight,
-      birth_date: secondData.birth_date.toISOString(),
-      sex: secondData.sex,
-      user_activity_level_id: +firstData.user_activity_level_id,
+      userData: {
+        height: +firstData.height,
+        weight: +firstData.weight,
+        birth_date: secondData.birth_date.toISOString(),
+        sex: secondData.sex,
+        user_activity_level_id: +firstData.user_activity_level_id,
+      },
+      goalId: +data.goalId,
     });
   }
 
@@ -69,6 +102,31 @@ export default function NewUserForm({
       {state === 2 && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="goalId"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Select your goal</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Want do you want to acheive?" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {goals.map((item) => (
+                        <SelectItem key={item.id} value={item.id.toString()}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button>Submit</Button>
           </form>
           <Button

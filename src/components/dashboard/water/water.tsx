@@ -12,7 +12,7 @@ export default function Water() {
 
 			<p>Today's water intake: 0 l</p>
 		) }
-		<p>Today's water: {diet.water} l</p>
+		<p>Today's water: {diet.diet.water} l</p>
 		<WaterForm />
 	</div>;
 }

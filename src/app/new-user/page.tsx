@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import NewUserForm from "@/components/new-user/new-user-form";
+import { dietRepository } from "@/diet/diet-repository";
 import userDataRepository from "@/user-data/user-data-repository";
 import { LoaderCircle } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -25,6 +26,9 @@ export default async function () {
 }
 
 async function Wrapper() {
-  const activities = await userDataRepository.getActivities();
-  return <NewUserForm activities={activities} />;
+  const [activities, goals] = await Promise.all([
+    userDataRepository.getActivities(),
+    dietRepository.getGoals(),
+  ]);
+  return <NewUserForm activities={activities} goals={goals} />;
 }

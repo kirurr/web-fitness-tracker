@@ -1,6 +1,9 @@
-import { createUserActivityLevelDTO } from "@/user-data/user-data-dto";
+import {
+  createGoalDTO,
+  createUserActivityLevelDTO,
+} from "@/user-data/user-data-dto";
 import { db } from "./db";
-import { metActivityTable, userActivityLevelTable } from "./schema";
+import { goalTable, metActivityTable, userActivityLevelTable } from "./schema";
 import { createMetActivityDTO } from "@/day/day-dto";
 
 async function main() {
@@ -41,7 +44,7 @@ async function main() {
     .values(activities)
     .onConflictDoNothing();
 
-	const metActivities: createMetActivityDTO[] = [
+  const metActivities: createMetActivityDTO[] = [
     { name: "Sleeping", value: 0.95 },
     { name: "Meditating", value: 1.0 },
     { name: "Watching TV while sitting", value: 1.3 },
@@ -189,7 +192,7 @@ async function main() {
     { name: "Step aerobics with 25-30 cm step", value: 9.5 },
     { name: "Kettlebell swings", value: 9.8 },
     { name: "Swimming laps vigorously", value: 9.8 },
-    { name: "Running 16 min/km", value: 9.8 }, 
+    { name: "Running 16 min/km", value: 9.8 },
     { name: "Treading water, fast", value: 9.8 },
     { name: "Rollerblading moderate pace", value: 9.8 },
     { name: "Water polo", value: 10.0 },
@@ -200,12 +203,12 @@ async function main() {
     { name: "Running 14 min/km", value: 10.5 },
     { name: "Skipping rope", value: 11.0 },
     { name: "Slide board exercises", value: 11.0 },
-    { name: "Running 12 min/km", value: 11.8 }, 
+    { name: "Running 12 min/km", value: 11.8 },
     { name: "Moderate pace rope jumping", value: 11.8 },
     { name: "Bicycling 30 km/h", value: 12.0 },
     { name: "Very vigorous stationary rowing", value: 12.0 },
     { name: "Fast rope jumping", value: 12.3 },
-    { name: "Running 10 min/km", value: 12.3 }, 
+    { name: "Running 10 min/km", value: 12.3 },
     { name: "Fast pace rollerblading", value: 12.3 },
     { name: "Vigorous kayaking", value: 12.5 },
     { name: "Brisk cross country skiing", value: 12.5 },
@@ -213,11 +216,19 @@ async function main() {
     { name: "Marathon running", value: 13.3 },
     { name: "Speed skating", value: 13.3 },
     { name: "Ice dancing", value: 14.0 },
-    { name: "Running 4.0 min/km", value: 14.5 }, 
+    { name: "Running 4.0 min/km", value: 14.5 },
     { name: "Running stairs", value: 15.0 },
-    { name: "Bicycling > 30 km/h", value: 15.8 }, 
+    { name: "Bicycling > 30 km/h", value: 15.8 },
     { name: "Running > 3 min/km", value: 19.0 },
-];
+  ];
   await db.insert(metActivityTable).values(metActivities).onConflictDoNothing();
+
+  const goals: createGoalDTO[] = [
+    { name: "Gain weight", value: 1.1 },
+    { name: "Lose weight", value: 0.9 },
+    { name: "Maintain weight", value: 1 },
+  ];
+
+  await db.insert(goalTable).values(goals).onConflictDoNothing();
 }
 main();

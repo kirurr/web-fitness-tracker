@@ -124,7 +124,7 @@ export default function FirstForm({
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                    <SelectValue placeholder="Seleact activity" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>

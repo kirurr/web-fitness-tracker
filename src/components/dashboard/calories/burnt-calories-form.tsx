@@ -85,13 +85,13 @@ export default function BurntCaloriesForm({
     let day = dayData;
     if (!day) {
       const [data, err] = await createDayAction.execute({
-				diet_id: diet.id,
+				diet_id: diet.diet.id,
         month_number: month.getMonth(),
         index: date.getDate(),
         calories_burnt: 0,
         calories_intake: 0,
-        calories_per_day: diet.calories,
-        water_per_day: diet.water,
+        calories_per_day: diet.diet.calories,
+        water_per_day: diet.diet.water,
         water_intake: 0,
       });
       if (err) throw err;

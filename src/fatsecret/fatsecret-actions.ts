@@ -12,3 +12,12 @@ export const findMeal = authenticatedProcedure
 
     return await fatsecretRepository.findMeal(token, input);
   });
+
+export const getMealById = authenticatedProcedure
+  .createServerAction()
+  .input(z.string())
+  .handler(async ({ input }) => {
+    const token = await fatsecretRepository.getTokenFromAPI();
+
+    return await fatsecretRepository.getMealById(token, input);
+  });

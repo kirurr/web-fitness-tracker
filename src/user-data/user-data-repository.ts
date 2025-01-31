@@ -10,7 +10,7 @@ import { createUserDataDTO } from "./user-data-dto";
 import { calculateCalories, calculateWater } from "@/lib/utils";
 
 const userDataRepository = {
-  create: async (user_id: number, data: createUserDataDTO) => {
+  create: async (user_id: number, data: createUserDataDTO, goalId: number) => {
     const userData = await db.transaction(async (trx) => {
       const [userData] = await trx
         .insert(userDataTable)
@@ -25,6 +25,7 @@ const userDataRepository = {
       await trx
         .insert(dietTable)
         .values({
+					goal_id: goalId,
 					calories,
 					water,
 					created: date,

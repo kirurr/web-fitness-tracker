@@ -37,6 +37,7 @@ export const dietTable = sqliteTable("diet", {
     .references(() => userTable.id),
   calories: integer().notNull(),
   water: integer().notNull(),
+	goal_id: integer().notNull().references(() => goalTable.id),
   created: text().notNull(),
   expired: text(),
 });
@@ -92,4 +93,10 @@ export const mealTable = sqliteTable("meal", {
   calories: integer().notNull(),
 	weight: integer().notNull(),
   created: text().notNull(),
+});
+
+export const goalTable = sqliteTable("goal", {
+  id: integer().primaryKey({ autoIncrement: true }),
+  value: integer().notNull(),
+	name: text().notNull().unique(),
 });

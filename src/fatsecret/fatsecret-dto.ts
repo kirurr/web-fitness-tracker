@@ -21,3 +21,18 @@ export type Food = {
   food_name: string;
   food_id: string;
 };
+
+export type SearchFood = {
+	food: {
+		food_id: string;
+		food_name: string;
+		servings: { serving: Serving[] };
+	}
+};
+
+export type Serving = {
+  serving_id: number;
+  metric_serving_amount: string;
+  number_of_units: string;
+  calories: string;
+};

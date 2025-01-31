@@ -79,7 +79,7 @@ function Meal({
 
   return (
     <li className="flex items-center">
-      {data.name}
+			{data.weight}g of {data.name.toLowerCase()} for {data.calories} calories
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Button type="submit" variant="outline">
