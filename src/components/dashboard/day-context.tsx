@@ -3,7 +3,6 @@ import { getDays } from "@/day/day-actions";
 import { getDayDTO } from "@/day/day-dto";
 import { getDietByIdAction } from "@/diet/diet-actions";
 import { getDietDTO } from "@/user-data/user-data-dto";
-import { getUserDTO } from "@/user/user-dto";
 import {
   createContext,
   Dispatch,
@@ -50,9 +49,12 @@ export function DayContextProvider({
   const { execute, isPending } = useServerAction(getDays);
   const getNewDietAction = useServerAction(getDietByIdAction);
 
-  async function onDateChange(date: Date) {
-    if (date.getMonth() !== month.getMonth()) onMonthChange(date);
-    setDayData(getDay(date, daysData));
+	async function handleDateChange(date: Date, newDaysData?: getDayDTO[]) {
+		if (newDaysData) {
+			setDayData(getDay(date, newDaysData));
+		} else {
+			setDayData(getDay(date, daysData));
+		}
     setDate(date);
 
     if (date.getTime() < new Date(diet.created).getTime()) {
@@ -78,14 +80,19 @@ export function DayContextProvider({
       if (err) throw err;
       setDiet(newDiet);
     }
+	}
+
+  async function onDateChange(date: Date) {
+    if (date.getMonth() !== month.getMonth()) return await onMonthChange(date);
+		await handleDateChange(date);
   }
 
   async function onMonthChange(date: Date) {
     setMonth(date);
-    await onDateChange(new Date(date.getFullYear(), date.getMonth(), 1));
     const [data, err] = await execute(date.getMonth());
     if (err) throw err;
     setDaysData(data);
+    await handleDateChange(new Date(date.getFullYear(), date.getMonth(), date.getDate()), data);
   }
 
   return (
