@@ -37,7 +37,17 @@ export const createDayFormSchema = z.object({
   water_intake: z.string(),
 });
 
-export const updateDaySchema = createUpdateSchema(dayTable);
+//export const updateDaySchema = createUpdateSchema(dayTable);
+export const updateDaySchema = z.object({
+  id: z.number(),
+  index: z.number().optional(),
+  month_number: z.number().optional(),
+  calories_burnt: z.number().optional(),
+  calories_intake: z.number().optional(),
+  calories_per_day: z.number().optional(),
+  water_per_day: z.number().optional(),
+  water_intake: z.number().optional(),
+});
 export const updateDayFormSchema = z.object({
   id: z.string(),
   index: z.string().optional(),
