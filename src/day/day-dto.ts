@@ -19,4 +19,4 @@ export type updateDayActivityDTO = Partial<
   typeof dayActivityTable.$inferInsert
 >;
 
-export type createMealDTO = typeof mealTable.$inferSelect;
+export type createMealDTO = typeof mealTable.$inferInsert;

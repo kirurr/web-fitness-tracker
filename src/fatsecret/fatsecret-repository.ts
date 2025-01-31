@@ -53,7 +53,7 @@ const fatsecretRepository = {
       return token.access_token;
     }
 
-    if (+token.expires_at < Date.now()) {
+    if (new Date(token.expires_at).getTime() <= Date.now()) {
       const token = await getToken();
       const expiresAt = new Date(Date.now() + token.expires_in);
 
@@ -88,8 +88,13 @@ const fatsecretRepository = {
     if (!response.ok) {
       throw new Error("Failed to fetch meals");
     }
+		const result = await response.json();
 
-    const meals: {foods: Foods} = await response.json();
+		if (result.error) {
+			throw new Error(JSON.stringify(result.error));
+		}
+
+    const meals: {foods: Foods} = result;
     return meals.foods;
   },
 };
