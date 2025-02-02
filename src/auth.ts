@@ -26,9 +26,9 @@ const providers: Provider[] = [
       }
 
       const newUser = await userRepository.create({
-        name: profile.name!,
+        name: profile.name ?? "UnknownMonkey",
         email: profile.email!,
-        image_url: profile.picture!,
+        image_url: profile.picture,
       });
       profile.id = newUser.id;
       return profile;
