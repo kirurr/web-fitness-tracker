@@ -6,7 +6,7 @@ import { LoaderCircle } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-export default async function page () {
+export default async function page() {
   const session = await auth();
   if (!session) {
     redirect("/signin");
@@ -15,13 +15,12 @@ export default async function page () {
   const data = await userDataRepository.getByUserId(session.user.id);
   if (data) redirect("/dashboard");
 
-
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
+    <main className="mx-auto flex h-screen max-w-screen-md flex-col items-center justify-center">
       <Suspense fallback={<LoaderCircle size={50} className="animate-spin" />}>
         <Wrapper />
       </Suspense>
-    </div>
+    </main>
   );
 }
 

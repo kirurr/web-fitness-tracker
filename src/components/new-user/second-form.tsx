@@ -48,7 +48,7 @@ export default function SecondForm({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-			birth_date: data ? data.birth_date : undefined,
+      birth_date: data ? data.birth_date : undefined,
       sex: data ? data.sex : "male",
     },
   });
@@ -90,6 +90,8 @@ export default function SecondForm({
                   <Calendar
                     mode="single"
                     selected={field.value}
+                    fromYear={1900}
+                    toYear={new Date().getFullYear()}
                     onSelect={field.onChange}
                     disabled={(date) =>
                       date > new Date() || date < new Date("1900-01-01")
@@ -108,13 +110,13 @@ export default function SecondForm({
           name="sex"
           rules={{ required: true }}
           render={({ field }) => (
-            <FormItem className="space-y-3">
+            <FormItem className="space-y-3 w-full">
               <FormLabel>Your sex</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value?.toString()}
-                  className="flex flex-col space-y-1"
+                  className="flex space-y-1"
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
@@ -134,13 +136,16 @@ export default function SecondForm({
             </FormItem>
           )}
         />
-        <Button
-          variant={"outline"}
-          onClick={() => setState((state) => state - 1)}
-        >
-          Back
-        </Button>
-        <Button type="submit">Next</Button>
+        <div>
+          <Button
+            variant={"outline"}
+            onClick={() => setState((state) => state - 1)}
+            className="mr-8"
+          >
+            Back
+          </Button>
+          <Button type="submit">Next</Button>
+        </div>
       </form>
     </Form>
   );

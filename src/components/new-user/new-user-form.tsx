@@ -61,9 +61,9 @@ export default function NewUserForm({
   });
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-		defaultValues:{
-			goalId: ""
-		}
+    defaultValues: {
+      goalId: "",
+    },
   });
 
   async function onSubmit(data: z.infer<typeof schema>) {
@@ -81,61 +81,66 @@ export default function NewUserForm({
   }
 
   return (
-    <>
-      <Progress value={state * 50} className="w-[60%]" />
-      {state === 0 && (
-        <FirstForm
-          data={firstData}
-          setData={setFirstData}
-          setState={setState}
-          activities={activities}
-        />
-      )}
-      {state === 1 && (
-        <SecondForm
-          data={secondData}
-          setData={setSecondData}
-          setState={setState}
-        />
-      )}
-      {state === 2 && (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="goalId"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select your goal</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Want do you want to acheive?" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {goals.map((item) => (
-                        <SelectItem key={item.id} value={item.id.toString()}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button>Submit</Button>
-          </form>
-          <Button
-            variant={"outline"}
-            onClick={() => setState((state) => state - 1)}
-          >
-            Back
-          </Button>
-        </Form>
-      )}
-    </>
+    <section className="w-full">
+      <Progress value={state * 50} className="w-full" />
+      <div className="mt-16">
+        {state === 0 && (
+          <FirstForm
+            data={firstData}
+            setData={setFirstData}
+            setState={setState}
+            activities={activities}
+          />
+        )}
+        {state === 1 && (
+          <SecondForm
+            data={secondData}
+            setData={setSecondData}
+            setState={setState}
+          />
+        )}
+        {state === 2 && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="goalId"
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Select your goal</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="What is your goal?" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {goals.map((item) => (
+                          <SelectItem key={item.id} value={item.id.toString()}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="mr-8 mt-8">Submit</Button>
+              <Button
+                variant={"outline"}
+                onClick={() => setState((state) => state - 1)}
+              >
+                Back
+              </Button>
+            </form>
+          </Form>
+        )}
+      </div>
+    </section>
   );
 }

@@ -29,11 +29,13 @@ export default function FirstForm({
   setState,
 }: {
   activities: getUserActivitiesLevelsDTO;
-  data: {
-    weight: string;
-    height: string;
-    user_activity_level_id: string;
-  } | undefined;
+  data:
+    | {
+        weight: string;
+        height: string;
+        user_activity_level_id: string;
+      }
+    | undefined;
   setData: Dispatch<
     SetStateAction<
       | {
@@ -48,22 +50,47 @@ export default function FirstForm({
 }) {
   const [activity, setActivity] = useState(
     data
-      ? activities.find((item) => item.id.toString() === data.user_activity_level_id)!
+      ? activities.find(
+          (item) => item.id.toString() === data.user_activity_level_id,
+        )!
       : activities[0],
   );
 
   const schema = z.object({
-    weight: z.string().min(1, "Weight is required"),
-    height: z.string().min(1, "Height is required"),
+    weight: z
+      .string()
+      .min(1, "Weight is required")
+      .refine(value => !isNaN(parseInt(value)), { message: "Weight must be a number" })
+      .refine(
+        (value) => {
+          const parsedValue = parseInt(value, 10);
+          if (isNaN(parsedValue)) return false;
+          return parsedValue >= 30 && parsedValue <= 300;
+        },
+        { message: "Weight must be between 30 and 300 kg" },
+      ),
+    height: z.string().min(1, "Height is required")
+      .refine(value => !isNaN(parseInt(value)), { message: "Height must be a number" })
+      .refine(
+        (value) => {
+          const parsedValue = parseInt(value, 10);
+          if (isNaN(parsedValue)) return false;
+          return parsedValue >= 50 && parsedValue <= 250;
+        },
+        { message: "Weight must be between 50 and 250 kg" },
+      ),
     user_activity_level_id: z.string(),
   });
 
   const form = useForm<z.infer<typeof schema>>({
+    mode: "onBlur",
     resolver: zodResolver(schema),
     defaultValues: {
       weight: data ? data.weight : "",
       height: data ? data.height : "",
-      user_activity_level_id: data ? data.user_activity_level_id.toString() : activity.id.toString(),
+      user_activity_level_id: data
+        ? data.user_activity_level_id.toString()
+        : activity.id.toString(),
     },
   });
 
@@ -78,7 +105,14 @@ export default function FirstForm({
           <FormField
             control={form.control}
             name="weight"
-            rules={{ required: true }}
+            rules={{
+              required: true,
+              validate: (value) => {
+                console.log(value);
+                return "nigger";
+                return parseInt(value) >= 30 || "nigger";
+              },
+            }}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Weight</FormLabel>
