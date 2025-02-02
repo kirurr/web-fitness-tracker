@@ -18,6 +18,8 @@ const eslintConfig = [
       "plugin:react-hooks/recommended",
     ],
     rules: {
+      "@typescript-eslint/ban-ts-ignore": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

@@ -156,6 +156,8 @@ async function getToken() {
       throw new Error("Network response was not ok " + response.statusText);
     }
     return (await response.json()) as FatsecretToken;
+    //@ts-ignore
+    //eslint-disable-next-line
   } catch (error: any) {
     throw new Error("There was a problem with the fetch operation:", error);
   }

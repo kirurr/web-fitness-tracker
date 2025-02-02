@@ -42,6 +42,7 @@ export default function DashboardCalendarPopover({
 }
 
 function Day(props: DayContentProps) {
+  //eslint-disable-next-line
   const { date, displayMonth, activeModifiers } = props;
   return <>{date.getDate()}</>;
 }

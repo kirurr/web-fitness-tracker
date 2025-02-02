@@ -1,10 +1,9 @@
 import {
   dayActivityTable,
-  dayTable,
   mealTable,
   userDataTable,
 } from "@/db/schema";
-import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
+import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const createUserDataSchema = createInsertSchema(userDataTable);

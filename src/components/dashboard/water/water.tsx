@@ -7,12 +7,12 @@ export default function Water() {
   return <div>
 		<h1>Water</h1>
 		{ dayData ? (
-			<p>Today's water intake: {dayData.water_intake} ml</p>
+			<p>Today&apos;s water intake: {dayData.water_intake} ml</p>
 		) : (
 
-			<p>Today's water intake: 0 l</p>
+			<p>Today&apos;s water intake: 0 l</p>
 		) }
-		<p>Today's water: {diet.diet.water} l</p>
+		<p>Today&apos;s water: {diet.diet.water} l</p>
 		<WaterForm />
 	</div>;
 }
