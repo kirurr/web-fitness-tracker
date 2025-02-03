@@ -103,7 +103,7 @@ export default function NewUserForm({
         )}
         {state === 2 && (
           <>
-            <h1 className="mb-8 text-center gradient-text">Almost done</h1>
+            <h1 className="mb-8 text-center gradient-text block w-fit mx-auto">Almost done</h1>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
@@ -137,19 +137,22 @@ export default function NewUserForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={isPending} className="mr-8">
-									<LoaderCircle  className={cn(
-										"animate-spin",
-										!isPending && "hidden"
-									)} />
-                  Submit
-                </Button>
-                <Button
-                  variant={"outline"}
-                  onClick={() => setState((state) => state - 1)}
-                >
-                  Back
-                </Button>
+
+								<div className="w-fit mx-auto">
+									<Button
+										variant={"outline"}
+										onClick={() => setState((state) => state - 1)}
+									>
+										Back
+									</Button>
+									<Button type="submit" disabled={isPending} className="ml-6">
+										<LoaderCircle  className={cn(
+											"animate-spin",
+											!isPending && "hidden"
+										)} />
+										Submit
+									</Button>
+								</div>
               </form>
             </Form>
           </>

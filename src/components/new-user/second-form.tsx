@@ -60,9 +60,9 @@ export default function SecondForm({
   }
   return (
     <>
-      <h1 className="mb-8 text-center gradient-text">We need to know you a bit more</h1>
+      <h1 className="mb-8 text-center gradient-text block w-fit mx-auto">We need to know you a bit more</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col w-fit mx-auto">
           <FormField
             control={form.control}
             name="birth_date"
@@ -84,13 +84,13 @@ export default function SecondForm({
             name="sex"
             rules={{ required: true }}
             render={({ field }) => (
-              <FormItem className="w-full space-y-3">
+              <FormItem className="w-fit space-y-3">
                 <FormLabel>Your sex</FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
                     defaultValue={field.value?.toString()}
-                    className="flex space-y-1"
+                    className="flex items-center"
                   >
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
@@ -110,11 +110,11 @@ export default function SecondForm({
               </FormItem>
             )}
           />
-          <div>
+          <div className="self-center">
             <Button
               variant={"outline"}
               onClick={() => setState((state) => state - 1)}
-              className="mr-8"
+              className="mr-6"
             >
               Back
             </Button>
