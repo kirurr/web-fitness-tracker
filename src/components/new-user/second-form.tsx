@@ -60,7 +60,7 @@ export default function SecondForm({
   }
   return (
     <>
-      <h1 className="mb-8 text-center">We need to know you a bit more</h1>
+      <h1 className="mb-8 text-center gradient-text">We need to know you a bit more</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

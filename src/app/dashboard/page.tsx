@@ -12,6 +12,7 @@ export default async function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
+			<div className="p-4 border-2 rounded" id="test">test</div>
       <Calories userData={userData.user_data} />
 			<Water />
     </div>

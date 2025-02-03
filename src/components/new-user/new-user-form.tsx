@@ -29,6 +29,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { LoaderCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function NewUserForm({
   activities,
@@ -48,7 +50,7 @@ export default function NewUserForm({
     sex: "male" | "female";
   }>();
 
-  const { execute } = useServerAction(createUserData, {
+  const { execute, isPending } = useServerAction(createUserData, {
     onSuccess: () => {
       console.log("success");
     },
@@ -101,9 +103,9 @@ export default function NewUserForm({
         )}
         {state === 2 && (
           <>
-            <h1 className="mb-8 text-center">Almost done</h1>
+            <h1 className="mb-8 text-center gradient-text">Almost done</h1>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
                   control={form.control}
                   name="goalId"
@@ -135,7 +137,11 @@ export default function NewUserForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="mr-8 mt-8">
+                <Button type="submit" disabled={isPending} className="mr-8">
+									<LoaderCircle  className={cn(
+										"animate-spin",
+										!isPending && "hidden"
+									)} />
                   Submit
                 </Button>
                 <Button

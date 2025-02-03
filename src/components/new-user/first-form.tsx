@@ -106,7 +106,7 @@ export default function FirstForm({
   }
   return (
     <>
-			<h1 className="text-center mb-8">Tell us about yourself</h1>
+			<h1 className="text-center mb-8 gradient-text">Tell us about yourself</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-col lg:flex-row w-full justify-between gap-4">
