@@ -16,7 +16,7 @@ export default async function page() {
   if (data) redirect("/dashboard");
 
   return (
-    <main className="mx-auto flex h-screen max-w-screen-md flex-col items-center justify-center">
+    <main className="flex h-screen flex-col items-center justify-center lg:mx-auto lg:max-w-screen-md">
       <Suspense fallback={<LoaderCircle size={50} className="animate-spin" />}>
         <Wrapper />
       </Suspense>

@@ -60,7 +60,9 @@ export default function FirstForm({
     weight: z
       .string()
       .min(1, "Weight is required")
-      .refine(value => !isNaN(parseInt(value)), { message: "Weight must be a number" })
+      .refine((value) => !isNaN(parseInt(value)), {
+        message: "Weight must be a number",
+      })
       .refine(
         (value) => {
           const parsedValue = parseInt(value, 10);
@@ -69,8 +71,12 @@ export default function FirstForm({
         },
         { message: "Weight must be between 30 and 300 kg" },
       ),
-    height: z.string().min(1, "Height is required")
-      .refine(value => !isNaN(parseInt(value)), { message: "Height must be a number" })
+    height: z
+      .string()
+      .min(1, "Height is required")
+      .refine((value) => !isNaN(parseInt(value)), {
+        message: "Height must be a number",
+      })
       .refine(
         (value) => {
           const parsedValue = parseInt(value, 10);
@@ -99,83 +105,76 @@ export default function FirstForm({
     setState((state) => state + 1);
   }
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex w-full justify-between gap-4">
+    <>
+			<h1 className="text-center mb-8">Tell us about yourself</h1>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="flex flex-col lg:flex-row w-full justify-between gap-4">
+            <FormField
+              control={form.control}
+              name="weight"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Weight</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter your weight" />
+                  </FormControl>
+                  <FormDescription>Enter your weight in kg</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="height"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Height</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter your height" />
+                  </FormControl>
+                  <FormDescription>Enter your height in cm</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
-            name="weight"
-            rules={{
-              required: true,
-              validate: (value) => {
-                console.log(value);
-                return "nigger";
-                return parseInt(value) >= 30 || "nigger";
-              },
-            }}
+            name="user_activity_level_id"
             render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Weight</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter your weight" />
-                </FormControl>
-                <FormDescription>Enter your weight in kg</FormDescription>
+              <FormItem>
+                <FormLabel>Activity</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    setActivity(
+                      activities.find((item) => item.id.toString() === value)!,
+                    );
+                    field.onChange(value);
+                  }}
+                  defaultValue={field.value.toString()}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleact activity" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {activities.map((item) => (
+                      <SelectItem key={item.id} value={item.id.toString()}>
+                        {item.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormDescription>{activity.description}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="height"
-            rules={{ required: true }}
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Height</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter your height" />
-                </FormControl>
-                <FormDescription>Enter your height in cm</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <FormField
-          control={form.control}
-          name="user_activity_level_id"
-          rules={{ required: true }}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Activity</FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  setActivity(
-                    activities.find((item) => item.id.toString() === value)!,
-                  );
-                  field.onChange(value);
-                }}
-                defaultValue={field.value.toString()}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleact activity" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {activities.map((item) => (
-                    <SelectItem key={item.id} value={item.id.toString()}>
-                      {item.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>{activity.description}</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Next</Button>
-      </form>
-    </Form>
+          <Button type="submit">Next</Button>
+        </form>
+      </Form>
+    </>
   );
 }

@@ -81,7 +81,7 @@ export default function NewUserForm({
   }
 
   return (
-    <section className="w-full">
+    <section className="h-full w-full px-8 py-16">
       <Progress value={state * 50} className="w-full" />
       <div className="mt-16">
         {state === 0 && (
@@ -100,45 +100,53 @@ export default function NewUserForm({
           />
         )}
         {state === 2 && (
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name="goalId"
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Select your goal</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value.toString()}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="What is your goal?" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {goals.map((item) => (
-                          <SelectItem key={item.id} value={item.id.toString()}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="mr-8 mt-8">Submit</Button>
-              <Button
-                variant={"outline"}
-                onClick={() => setState((state) => state - 1)}
-              >
-                Back
-              </Button>
-            </form>
-          </Form>
+          <>
+            <h1 className="mb-8 text-center">Almost done</h1>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="goalId"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select your goal</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value.toString()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="What is your goal?" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {goals.map((item) => (
+                            <SelectItem
+                              key={item.id}
+                              value={item.id.toString()}
+                            >
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="mr-8 mt-8">
+                  Submit
+                </Button>
+                <Button
+                  variant={"outline"}
+                  onClick={() => setState((state) => state - 1)}
+                >
+                  Back
+                </Button>
+              </form>
+            </Form>
+          </>
         )}
       </div>
     </section>
