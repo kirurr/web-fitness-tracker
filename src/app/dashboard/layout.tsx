@@ -28,8 +28,10 @@ export default async function DashboardLayout({
         userDiets={diets}
         days={daysData}
       >
+      <main className="max-w-screen-lg mx-auto py-8">
         <DashboardCalendarWrapper />
         {children}
+      </main>
       </DayContextProvider>
     </ReactQueryProvider>
   );

@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
-import Calories from "@/components/dashboard/calories/calories";
+import BurntCalories from "@/components/dashboard/calories/burnt-calories";
+import IntakeCalories from "@/components/dashboard/calories/intake-calories";
 import Water from "@/components/dashboard/water/water";
 import userDataRepository from "@/user-data/user-data-repository";
 import { redirect } from "next/navigation";
@@ -12,8 +13,8 @@ export default async function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-			<div className="p-4 border-2 rounded" id="test">test</div>
-      <Calories userData={userData.user_data} />
+      <BurntCalories userData={userData.user_data} />
+      <IntakeCalories />
 			<Water />
     </div>
   );

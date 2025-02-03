@@ -1,22 +1,41 @@
 "use client";
 
+import { add, sub } from "date-fns";
+import { Button } from "../ui/button";
 import DashboardCalendarPopover from "./dashboard-calendar";
 import { useDayContext } from "./day-context";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function DashboardCalendarWrapper() {
-	const context = useDayContext();
-	if (!context) return null;
-
-  const { date, onDateChange, month, onMonthChange, dayData, isPending } = context;
+  const { date, onDateChange, month, onMonthChange, dayData, isPending, daysData } =
+    useDayContext();
 
   return (
     <>
-      <DashboardCalendarPopover
-        date={date}
-        setDate={onDateChange}
-        month={month}
-        setMonth={onMonthChange}
-      />
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => onDateChange(sub(new Date(date), { days: 1 }))}
+        >
+          <ArrowLeft />
+          Previous day
+        </Button>
+        <DashboardCalendarPopover
+          isPending={isPending}
+          date={date}
+          daysData={daysData}
+          setDate={onDateChange}
+          month={month}
+          setMonth={onMonthChange}
+        />
+        <Button
+          variant="outline"
+          onClick={() => onDateChange(add(new Date(date), { days: 1 }))}
+        >
+          Next day
+          <ArrowRight />
+        </Button>
+      </div>
       {isPending && <div>Loading...</div>}
       <div>{dayData ? JSON.stringify(dayData) : "no day entry"}</div>
     </>
