@@ -12,7 +12,7 @@ export default function DashboardCalendarPopover({
   setDate,
   month,
   setMonth,
-  daysData
+  daysData,
 }: {
   isPending: boolean;
   date: Date;
@@ -30,7 +30,7 @@ export default function DashboardCalendarPopover({
   return (
     <Popover open={isOpen} onOpenChange={(value) => setIsOpen(value)}>
       <PopoverTrigger asChild>
-        <Button disabled={isPending} variant="outline">
+        <Button disabled={isPending} size="lg" variant="outline">
           {date.toDateString() == new Date().toDateString()
             ? "Today"
             : date.toDateString()}
@@ -46,8 +46,13 @@ export default function DashboardCalendarPopover({
           onSelect={(date) => onDateSelect(date ?? new Date())}
           selected={date}
           month={month}
-          modifiers={{ hasData:  daysData.map(day => new Date(date.getFullYear(), day.month_number, day.index))}}
-          modifiersClassNames={{ hasData: "border-2"}}
+          modifiers={{
+            hasData: daysData.map(
+              (day) =>
+                new Date(date.getFullYear(), day.month_number, day.index),
+            ),
+          }}
+          modifiersClassNames={{ hasData: "border-2" }}
           onMonthChange={(month) => setMonth(month)}
           mode="single"
           components={{

@@ -13,3 +13,14 @@ export const createUserData = authenticatedProcedure
 
     redirect("/dashboard");
   });
+
+export const updateUserData = authenticatedProcedure
+  .createServerAction()
+  .input(z.object({ userData: createUserDataSchema, dietId: z.number(), goalId: z.number() }))
+  .handler(async ({ input, ctx }) => {
+    await userDataRepository.update(
+      ctx.session.user.id, input.userData, input.dietId, input.goalId
+    );
+
+    redirect("/profile");
+  });

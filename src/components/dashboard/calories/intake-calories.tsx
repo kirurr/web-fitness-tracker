@@ -3,15 +3,17 @@
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useDayContext } from "../day-context";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-export default function IntakeCalories() {
+export default function IntakeCalories({  className }: { className?: string }) {
   const { dayData, diet } = useDayContext();
 
   const caloriesForDay = diet.diet.calories;
   const caloriesForIntake = Math.round(caloriesForDay * diet.goal!.value);
   const caloriesIntake = dayData ? dayData.calories_intake : 0;
   return (
-    <div className="flex w-full gap-8 rounded-xl p-4 shadow-lg bg-[#ba95f4]/20">
+    <div className={cn("flex gap-8 rounded-xl p-4 shadow-lg bg-[#ba95f4]/10", className)}>
       <CircularProgress
         progress={(caloriesIntake / caloriesForIntake) * 100}
         strokeWidth={20}
@@ -27,7 +29,9 @@ export default function IntakeCalories() {
         <p>
           <span className="text-muted-foreground">Calories intake:</span> {caloriesIntake}
         </p>
-				<Button className="w-fit mt-4" onClick={() => console.log("click")}>Add meal</Button>
+        <Link href={"/dashboard/intake-calories"}>
+          <Button className="w-fit mt-4">Add meal</Button>
+        </Link>
       </div>
     </div>
   );

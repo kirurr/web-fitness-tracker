@@ -13,7 +13,7 @@ export const userDataTable = sqliteTable("user_data", {
   weight: integer().notNull(),
   height: integer().notNull(),
   birth_date: text().notNull(),
-  sex: text({ enum: ["male", "female"] }),
+  sex: text({ enum: ["male", "female"] }).notNull(),
   user_activity_level_id: integer()
     .notNull()
     .references(() => userActivityLevelTable.id),

@@ -1,6 +1,6 @@
 "use client";
 
-import { createUserData } from "@/user-data/user-data-actions";
+import { createUserData, updateUserData } from "@/user-data/user-data-actions";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import {
@@ -19,6 +19,7 @@ import { Progress } from "../ui/progress";
 import {
   getGoalDTO,
   getUserActivitiesLevelsDTO,
+  getUserDataDTO,
 } from "@/user-data/user-data-dto";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,32 +33,54 @@ import {
 import { LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function NewUserForm({
+export default function UserDataForm({
+  isNewUser = true,
   activities,
   goals,
+  prevData,
+  dietId,
 }: {
+  isNewUser?: boolean;
   activities: getUserActivitiesLevelsDTO;
   goals: getGoalDTO[];
+  prevData?: getUserDataDTO;
+  dietId?: number;
 }) {
   const [state, setState] = useState(0);
-  const [firstData, setFirstData] = useState<{
-    weight: string;
-    height: string;
-    user_activity_level_id: string;
-  }>();
-  const [secondData, setSecondData] = useState<{
-    birth_date: Date;
-    sex: "male" | "female";
-  }>();
+  const [firstData, setFirstData] = useState<
+    | {
+        weight: string;
+        height: string;
+        user_activity_level_id: string;
+      }
+    | undefined
+  >(
+    prevData
+      ? {
+          weight: prevData.weight.toString(),
+          height: prevData.height.toString(),
+          user_activity_level_id: prevData.user_activity_level_id.toString(),
+        }
+      : undefined,
+  );
+  const [secondData, setSecondData] = useState<
+    | {
+        birth_date: Date;
+        sex: "male" | "female";
+      }
+    | undefined
+  >(
+    prevData
+      ? {
+          birth_date: new Date(prevData?.birth_date),
+          sex: prevData?.sex,
+        }
+      : undefined,
+  );
 
-  const { execute, isPending } = useServerAction(createUserData, {
-    onSuccess: () => {
-      console.log("success");
-    },
-    onError: ({ err }) => {
-      console.error(err);
-    },
-  });
+  const createUserDataAction = useServerAction(createUserData);
+  const updateUserDataAction = useServerAction(updateUserData);
+
   const schema = z.object({
     goalId: z.string(),
   });
@@ -70,16 +93,31 @@ export default function NewUserForm({
 
   async function onSubmit(data: z.infer<typeof schema>) {
     if (!firstData || !secondData) throw Error();
-    await execute({
-      userData: {
-        height: +firstData.height,
-        weight: +firstData.weight,
-        birth_date: secondData.birth_date.toISOString(),
-        sex: secondData.sex,
-        user_activity_level_id: +firstData.user_activity_level_id,
-      },
-      goalId: +data.goalId,
-    });
+    if (isNewUser) {
+      await createUserDataAction.execute({
+        userData: {
+          height: +firstData.height,
+          weight: +firstData.weight,
+          birth_date: secondData.birth_date.toISOString(),
+          sex: secondData.sex,
+          user_activity_level_id: +firstData.user_activity_level_id,
+        },
+        goalId: +data.goalId,
+      });
+    } else {
+      await updateUserDataAction.execute({
+        userData: {
+          id: prevData!.id,
+          height: +firstData.height,
+          weight: +firstData.weight,
+          birth_date: secondData.birth_date.toISOString(),
+          sex: secondData.sex,
+          user_activity_level_id: +firstData.user_activity_level_id,
+        },
+        goalId: +data.goalId,
+        dietId: dietId!,
+      });
+    }
   }
 
   return (
@@ -103,9 +141,14 @@ export default function NewUserForm({
         )}
         {state === 2 && (
           <>
-            <h1 className="mb-8 text-center gradient-text block w-fit mx-auto">Almost done</h1>
+            <h1 className="gradient-text mx-auto mb-8 block w-fit text-center">
+              Almost done
+            </h1>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
                 <FormField
                   control={form.control}
                   name="goalId"
@@ -138,21 +181,27 @@ export default function NewUserForm({
                   )}
                 />
 
-								<div className="w-fit mx-auto">
-									<Button
-										variant={"outline"}
-										onClick={() => setState((state) => state - 1)}
-									>
-										Back
-									</Button>
-									<Button type="submit" disabled={isPending} className="ml-6">
-										<LoaderCircle  className={cn(
-											"animate-spin",
-											!isPending && "hidden"
-										)} />
-										Submit
-									</Button>
-								</div>
+                <div className="mx-auto w-fit">
+                  <Button
+                    variant={"outline"}
+                    onClick={() => setState((state) => state - 1)}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={createUserDataAction.isPending}
+                    className="ml-6"
+                  >
+                    <LoaderCircle
+                      className={cn(
+                        "animate-spin",
+                        !createUserDataAction.isPending && "hidden",
+                      )}
+                    />
+                    Submit
+                  </Button>
+                </div>
               </form>
             </Form>
           </>

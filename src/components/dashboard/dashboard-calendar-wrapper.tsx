@@ -15,6 +15,7 @@ export default function DashboardCalendarWrapper() {
       <div className="flex justify-between mb-16">
         <Button
           variant="outline"
+          size="lg"
           onClick={() => onDateChange(sub(new Date(date), { days: 1 }))}
         >
           <ArrowLeft />
@@ -30,6 +31,7 @@ export default function DashboardCalendarWrapper() {
         />
         <Button
           variant="outline"
+          size="lg"
           onClick={() => onDateChange(add(new Date(date), { days: 1 }))}
         >
           Next day

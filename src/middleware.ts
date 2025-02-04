@@ -1,7 +1,7 @@
 import { auth } from "@/auth"
 import { NextRequest, NextResponse } from "next/server"
 export const config = {
-	matcher: ["/dashboard/:path*"]
+	matcher: ["/dashboard/:path*", "/profile/:path*"],
 }
 
 export async function middleware(request: NextRequest) {

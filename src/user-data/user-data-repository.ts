@@ -6,7 +6,7 @@ import {
   userTable,
 } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { createUserDataDTO } from "./user-data-dto";
+import { createUserDataDTO, updateUserDataDTO } from "./user-data-dto";
 import { calculateCalories, calculateWater } from "@/lib/utils";
 
 const userDataRepository = {
@@ -38,6 +38,33 @@ const userDataRepository = {
         .set({ user_data_id: userData.id })
         .where(eq(userTable.id, user_id));
       return userData;
+    });
+    return userData;
+  },
+  update: async (user_id: number, data: updateUserDataDTO, diet_id: number, goal_id: number) => {
+    const userData = await db.transaction(async (trx) => {
+      const [updatedUserData] = await trx
+        .update(userDataTable)
+        .set(data)
+        .where(eq(userDataTable.id, data.id!)).returning();
+
+      const activities = await trx.select().from(userActivityLevelTable);
+      const calories = calculateCalories(updatedUserData, activities);
+      const water = calculateWater(updatedUserData, activities);
+
+      const date = new Date().toDateString();
+      await trx.update(dietTable).set({expired: date}).where(eq(dietTable.id, diet_id));
+
+      await trx
+        .insert(dietTable)
+        .values({
+					goal_id: goal_id,
+					calories,
+					water,
+					created: date,
+					user_id: user_id
+				})
+        .returning();
     });
     return userData;
   },

@@ -12,22 +12,30 @@ export default async function page() {
     redirect("/signin");
   }
 
-  const data = await userDataRepository.getByUserId(session.user.id);
-  if (data) redirect("/dashboard");
-
   return (
     <main className="flex h-screen flex-col items-center justify-center lg:mx-auto lg:max-w-screen-md">
       <Suspense fallback={<LoaderCircle size={50} className="animate-spin" />}>
-        <Wrapper />
+        <Wrapper userId={session.user.id} />
       </Suspense>
     </main>
   );
 }
 
-async function Wrapper() {
-  const [activities, goals] = await Promise.all([
+async function Wrapper({ userId }: { userId: number }) {
+  const [activities, goals, diets, userData] = await Promise.all([
     userDataRepository.getActivities(),
     dietRepository.getGoals(),
+    dietRepository.getByUserId(userId),
+    userDataRepository.getByUserId(userId),
   ]);
-  return <UserDataForm activities={activities} goals={goals} />;
+  const diet = diets.find((diet) => diet.diet.expired === null)!;
+  return (
+    <UserDataForm
+      activities={activities}
+      isNewUser={false}
+      goals={goals}
+      dietId={diet.diet.id}
+      prevData={userData.user_data}
+    />
+  );
 }

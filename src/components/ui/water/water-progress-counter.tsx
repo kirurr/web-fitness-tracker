@@ -1,6 +1,4 @@
 "use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { WaterDroplet } from "./water-droplet";
 import { Plus, Minus, LoaderCircle } from "lucide-react";
@@ -15,7 +13,6 @@ export function WaterProgressCounter() {
 
   return (
     <div className="mx-auto w-full max-w-sm space-y-6">
-      <h2 className="text-center text-[#348de9]">Water Intake</h2>
       <div className="flex flex-wrap items-end justify-center gap-2">
         {Array.from({ length: diet.diet.water }).map((_, index) => {
           const fillPercentage = Math.max(

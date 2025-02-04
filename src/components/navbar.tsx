@@ -12,45 +12,57 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Button } from "./ui/button";
-import { Menu } from "lucide-react";
+import { Menu, User2 } from "lucide-react";
+import { auth } from "@/auth";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC = async () => {
+  const session = await auth();
   return (
     <nav className="left-0 right-0 top-0 z-50 transition-all duration-300">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold">
-              Logo
+            <Link href="/" className="text-3xl font-bold">
+              Fitness<span className="text-primary">Tracker</span>
             </Link>
           </div>
 
           <div className="hidden lg:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              <Link
-                href="/"
-                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:text-gray-600"
-              >
-                Home
+            <div className="ml-10 flex items-center space-x-4">
+              <Link href="/about">
+                <Button variant="link" size="sm" className="text-foreground">
+                  About
+                </Button>
               </Link>
-              <Link
-                href="/about"
-                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:text-gray-600"
-              >
-                About
-              </Link>
-              <Link
-                href="/services"
-                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:text-gray-600"
-              >
-                Services
-              </Link>
-              <Link
-                href="/contact"
-                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:text-gray-600"
-              >
-                Contact
-              </Link>
+              {session?.user ? (
+                <>
+                  <Link className="" href="/dashboard">
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="text-foreground"
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Link href="profile">
+                    <Avatar>
+                      <AvatarImage src={session.user.image ?? ""} />
+                      <AvatarFallback className="">
+                        <User2 />
+                      </AvatarFallback>
+                    </Avatar>
+                  </Link>
+                </>
+              ) : (
+                <Link href="/signin">
+                  <Button variant="link" size="sm" className="text-foreground">
+                    Sign in
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
           <Sheet>

@@ -83,7 +83,7 @@ export default function FirstForm({
           if (isNaN(parsedValue)) return false;
           return parsedValue >= 50 && parsedValue <= 250;
         },
-        { message: "Weight must be between 50 and 250 kg" },
+        { message: "Height must be between 50 and 250 kg" },
       ),
     user_activity_level_id: z.string(),
   });
