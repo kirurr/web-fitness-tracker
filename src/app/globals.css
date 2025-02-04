@@ -89,6 +89,12 @@ select {
   h1 {
     @apply text-4xl font-bold;
   }
+	h2 {
+		@apply text-3xl font-bold;
+	}
+	p {
+		@apply text-lg;
+	}
 	
 	.gradient-text {
 		@apply text-transparent bg-clip-text bg-gradient-to-r from-[#43acf5] to-[#ba95f4]

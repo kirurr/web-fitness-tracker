@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora, Open_Sans } from "next/font/google";
 
 import "./globals.css";
+import Navbar from "@/components/navbar";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -25,8 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sora.variable} ${openSans.variable} antialiased`}
+        className={`${sora.variable} ${openSans.variable} antialiased w-full`}
       >
+				<Navbar />
         {children}
       </body>
     </html>

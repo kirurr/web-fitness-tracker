@@ -7,12 +7,12 @@ import { useDayContext } from "./day-context";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function DashboardCalendarWrapper() {
-  const { date, onDateChange, month, onMonthChange, dayData, isPending, daysData } =
+  const { date, onDateChange, month, onMonthChange, isPending, daysData } =
     useDayContext();
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-16">
         <Button
           variant="outline"
           onClick={() => onDateChange(sub(new Date(date), { days: 1 }))}
@@ -36,8 +36,6 @@ export default function DashboardCalendarWrapper() {
           <ArrowRight />
         </Button>
       </div>
-      {isPending && <div>Loading...</div>}
-      <div>{dayData ? JSON.stringify(dayData) : "no day entry"}</div>
     </>
   );
 }
