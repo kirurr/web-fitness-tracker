@@ -23,18 +23,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { createMeal, createDay, updateDay } from "@/day/day-actions";
+import {
+  createMeal,
+  createDay,
+  updateDay,
+} from "@/day/day-actions";
 import { findMeal, getMealById } from "@/fatsecret/fatsecret-actions";
 import { createMealFormSchema } from "@/lib/schemas";
 import { useServerActionQuery } from "@/lib/server-action-hooks";
-import {
-  calculateMealCalories,
-  cn,
-} from "@/lib/utils";
+import { calculateMealCalories, cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, LoaderCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useServerAction } from "zsa-react";
@@ -56,7 +57,12 @@ export default function SelectMealForm() {
     defaultValues: {
       weight: "",
     },
+    mode: "onBlur",
   });
+
+  useEffect(() => {
+    form.reset(undefined, { keepDefaultValues: true });
+  }, [form.formState.isSubmitSuccessful, form]);
 
   const { dayData, setDayData, setDaysData, diet, month, date } =
     useDayContext();
@@ -65,7 +71,13 @@ export default function SelectMealForm() {
   const updateDayAction = useServerAction(updateDay);
 
   const createMealAction = useServerAction(createMeal);
-	const getMealByIdAction = useServerAction(getMealById);
+  const getMealByIdAction = useServerAction(getMealById);
+
+  const isPending =
+    createMealAction.isPending ||
+    getMealByIdAction.isPending ||
+    updateDayAction.isPending ||
+    getMealByIdAction.isPending;
 
   async function onSubmit(data: z.infer<typeof createMealFormSchema>) {
     let day = dayData;
@@ -85,13 +97,16 @@ export default function SelectMealForm() {
       setDaysData((days) => [...days, data]);
     }
 
-		const [mealData, mealDataErr] = await getMealByIdAction.execute(data.food.food_id);
+    const [mealData, mealDataErr] = await getMealByIdAction.execute(
+      data.food.food_id,
+    );
 
-		if (mealDataErr) throw mealDataErr;
+    if (mealDataErr) throw mealDataErr;
 
-		const numberOfUnits = +mealData.servings.serving[0].number_of_units;
-		const calories = +mealData.servings.serving[0].calories;
-		const portion = +mealData.servings.serving[0].metric_serving_amount * numberOfUnits;
+    const numberOfUnits = +mealData.servings.serving[0].number_of_units;
+    const calories = +mealData.servings.serving[0].calories;
+    const portion =
+      +mealData.servings.serving[0].metric_serving_amount * numberOfUnits;
 
     const [_meal, mealErr] = await createMealAction.execute({
       name: data.food.food_name,
@@ -116,12 +131,12 @@ export default function SelectMealForm() {
     });
     if (updateDayErr) throw updateDayErr;
 
+    queryClient.invalidateQueries({ queryKey: ["dayMeals"] });
+
     setDayData(updateDayData);
     setDaysData((days) =>
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
-
-    queryClient.invalidateQueries({ queryKey: ["dayMeals"] });
   }
 
   return (
@@ -141,7 +156,7 @@ export default function SelectMealForm() {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
+                        "w-full justify-between",
                         !field.value && "text-muted-foreground",
                       )}
                     >
@@ -237,7 +252,13 @@ export default function SelectMealForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={isPending} className="mt-4 mr-4" type="submit">
+          <LoaderCircle
+            className={cn("animate-spin", !isPending && "hidden")}
+          />
+          Submit
+        </Button>
+        <a href="https://www.fatsecret.com">Powered by fatsecret</a>
       </form>
     </Form>
   );

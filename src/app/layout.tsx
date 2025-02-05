@@ -30,7 +30,9 @@ export default function RootLayout({
         className={`${sora.variable} ${openSans.variable} flex min-h-screen w-full flex-col antialiased`}
       >
         <Navbar />
-        <main className="mx-auto max-w-screen-lg w-full px-2 lg:px-0 py-8">{children}</main>
+        <main className="mx-auto h-full w-full max-w-screen-lg grow px-2 py-8 lg:px-0">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

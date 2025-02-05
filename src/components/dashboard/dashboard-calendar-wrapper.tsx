@@ -11,8 +11,7 @@ export default function DashboardCalendarWrapper() {
     useDayContext();
 
   return (
-    <>
-      <div className="mb-16 flex justify-between">
+      <div className="mb-16 flex justify-between w-full">
         <Button
           className="hidden lg:inline-flex"
           variant="outline"
@@ -40,6 +39,5 @@ export default function DashboardCalendarWrapper() {
           <ArrowRight />
         </Button>
       </div>
-    </>
   );
 }

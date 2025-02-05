@@ -60,8 +60,16 @@ export const updateDayFormSchema = z.object({
 
 export const createDayActivitySchema = createInsertSchema(dayActivityTable);
 export const createDayActivityFormSchema = z.object({
-  met_activity_id: z.string(),
-  duration: z.string(),
+  met_activity_id: z.string().min(1, "You need to select activity"),
+  duration: z.string()
+  .refine((value) => !isNaN(parseInt(value)), {
+    message: "Duration must be a number",
+  })
+  .refine(value => {
+    const parsedValue = parseInt(value)
+    if (isNaN(parsedValue)) return false;
+    return parsedValue >= 1 && parsedValue <= 24;
+  }, { message: "Duration must be from 1 to 24"}),
 });
 
 export const createMealSchema = createInsertSchema(mealTable);
@@ -71,5 +79,13 @@ export const createMealFormSchema = z.object({
     food_description: z.string(),
     food_id: z.string(),
   }),
-  weight: z.string(),
+  weight: z.string()
+  .refine((value) => !isNaN(parseInt(value)), {
+    message: "Weight must be a number",
+  })
+  .refine(value => {
+    const parsedValue = parseInt(value)
+    if (isNaN(parsedValue)) return false;
+    return parsedValue >= 1 && parsedValue <= 4000;
+  }, { message: "Weight must be from 1 to 4000"}),
 });

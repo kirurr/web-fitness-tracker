@@ -17,13 +17,12 @@ export default async function page() {
 
   return (
     <section className="flex flex-col items-center justify-center mx-auto max-w-screen-md">
-      <Suspense fallback={<LoaderCircle size={50} className="animate-spin" />}>
+      <Suspense fallback={<LoaderCircle size={50} className="mx-auto animate-spin text-border" />}>
         <Wrapper />
       </Suspense>
     </section>
   );
 }
-
 async function Wrapper() {
   const [activities, goals] = await Promise.all([
     userDataRepository.getActivities(),

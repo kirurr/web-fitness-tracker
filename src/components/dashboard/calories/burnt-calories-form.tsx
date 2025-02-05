@@ -66,11 +66,12 @@ export default function BurntCaloriesForm({
       met_activity_id: "",
       duration: "",
     },
+    mode: "onBlur",
   });
 
   useEffect(() => {
     form.reset(undefined, { keepDefaultValues: true });
-  }, [form.formState.isSubmitSuccessful]);
+  }, [form.formState.isSubmitSuccessful, form]);
 
   const queryClient = useQueryClient();
 
@@ -192,7 +193,13 @@ export default function BurntCaloriesForm({
                     }}
                   >
                     <CommandInput placeholder="Search activity..." />
-                    <CommandList>
+                    <CommandList
+                      className={cn(
+                        getMETActivitiesAction.isPending
+                          ? "overflow-hidden"
+                          : "overflow-auto",
+                      )}
+                    >
                       {getMETActivitiesAction.isPending ? (
                         <CommandEmpty>
                           <div className="flex size-full animate-spin items-center justify-center">
@@ -237,16 +244,11 @@ export default function BurntCaloriesForm({
         <FormField
           control={form.control}
           name="duration"
-          rules={{ required: true }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Duration</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  {...field}
-                  placeholder="Enter duration in hours"
-                />
+                <Input {...field} placeholder="Enter duration in hours" />
               </FormControl>
               <FormDescription>Enter duration in hours</FormDescription>
               <FormMessage />
@@ -255,7 +257,7 @@ export default function BurntCaloriesForm({
         />
         <Button
           disabled={isPending}
-          className="bg-[#348de9] hover:bg-[#348de9]/90"
+          className="mt-4 bg-[#348de9] hover:bg-[#348de9]/90"
           type="submit"
         >
           <LoaderCircle

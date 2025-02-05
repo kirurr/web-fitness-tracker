@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export default function BurntCalories({ className }: { className?: string }) {
+export default function BurntCalories({ className, showButton = true }: { className?: string, showButton?: boolean }) {
   const { dayData, diet } = useDayContext();
 
   const caloriesForDay = diet.diet.calories;
@@ -35,7 +35,7 @@ export default function BurntCalories({ className }: { className?: string }) {
           <span className="text-muted-foreground">Calories burnt:</span>{" "}
           {caloriesBurnt}
         </p>
-        <Link href={"/dashboard/burnt-calories"}>
+        <Link className={cn(!showButton && "hidden")} href={"/dashboard/burnt-calories"}>
           <Button className="mt-4 w-fit bg-[#348de9] hover:bg-[#348de9]/90">
             Add activity
           </Button>

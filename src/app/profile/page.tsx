@@ -23,7 +23,7 @@ export default async function Profile() {
   return (
     <>
       <section className="mx-auto max-w-screen-md">
-        <h1 className="hidden text-center lg:block">Your profile</h1>
+        <h1 className="hidden text-center lg:block gradient-text w-fit mx-auto">Your profile</h1>
         <div className="flex flex-col gap-4 p-4 lg:flex-row">
           <div className="flex flex-col items-center gap-4 space-y-2 rounded-lg p-4 shadow-xl lg:flex-row">
             <Avatar className="h-24 w-24">
@@ -49,14 +49,14 @@ export default async function Profile() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-center space-y-2 rounded-lg p-4 shadow-xl">
+          <div className="flex flex-col text-balance justify-center space-y-2 rounded-lg p-4 shadow-xl">
             <p>
               <span className="text-muted-foreground">Height:</span>{" "}
-              {userData.user_data.height}
+              {userData.user_data.height} cm
             </p>
             <p>
               <span className="text-muted-foreground">Weight:</span>{" "}
-              {userData.user_data.weight}
+              {userData.user_data.weight} kg
             </p>
             <p>
               <span className="text-muted-foreground">Date of birth:</span>{" "}
@@ -65,8 +65,8 @@ export default async function Profile() {
           </div>
         </div>
       </section>
-      <section className="mt-8 space-y-2">
-        <h2>
+      <section className="mt-8 space-y-2 text-center lg:text-start mx-auto max-w-screen-md">
+        <h2 className="text-balance">
           Your goal is:{" "}
           <span className="text-primary">
             {currentDiet?.goal?.name.toLowerCase()}
