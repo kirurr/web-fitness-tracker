@@ -9,7 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "./ui/sheet";
+} from "../ui/sheet";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -23,7 +23,8 @@ export default function NavbarMobileMenu({ isUser }: { isUser: boolean }) {
 			setCurrentPathname(pathname);
 			setOpen(false);
 		}
-	}, [pathname]);
+	}, [pathname, currentPathname]);
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger className="block lg:hidden">

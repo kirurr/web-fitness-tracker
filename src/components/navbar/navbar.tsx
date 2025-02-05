@@ -1,9 +1,9 @@
 import type React from "react";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { User2 } from "lucide-react";
 import { auth } from "@/auth";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import NavbarMobileMenu from "./navbar-mobile-menu";
 
 const Navbar: React.FC = async () => {
