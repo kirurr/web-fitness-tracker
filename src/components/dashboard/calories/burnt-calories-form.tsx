@@ -35,7 +35,7 @@ import { createDayActivityFormSchema } from "@/lib/schemas";
 import { calculateMETCalories, cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown, LoaderCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useServerAction } from "zsa-react";
@@ -68,10 +68,6 @@ export default function BurntCaloriesForm({
     },
     mode: "onBlur",
   });
-
-  useEffect(() => {
-    form.reset(undefined, { keepDefaultValues: true });
-  }, [form.formState.isSubmitSuccessful, form]);
 
   const queryClient = useQueryClient();
 

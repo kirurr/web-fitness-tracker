@@ -29,8 +29,8 @@ export default async function IntakeCaloriesPage() {
       </Breadcrumb>
       <section className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:grid-rows-2">
         <SelectMealForm />
-        <IntakeCalories className="row-start-1" showButton={false} />
-        <div className="w-full">
+        <IntakeCalories className="lg:row-start-auto row-start-1" showButton={false} />
+        <div className="w-full self-start">
           <Meals />
         </div>
       </section>

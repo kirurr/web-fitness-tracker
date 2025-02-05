@@ -31,7 +31,7 @@ export default async function BurntCaloriesPage() {
     <section className="w-full grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2 items-center gap-8">
       <BurntCaloriesForm userData={userData.user_data} />
       <BurntCalories showButton={false} className="row-start-1 lg:row-auto" />
-      <div className="w-full">
+      <div className="w-full self-start">
         <Activities userData={userData.user_data} />
       </div>
     </section>

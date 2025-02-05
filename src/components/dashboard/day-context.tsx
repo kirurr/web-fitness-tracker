@@ -23,6 +23,7 @@ type DayContextType = {
   isPending: boolean;
   setDayData: Dispatch<SetStateAction<getDayDTO | undefined>>;
   setDaysData: Dispatch<SetStateAction<getDayDTO[]>>;
+  isDietPending: boolean
 };
 
 const DayContext = createContext<DayContextType>({} as DayContextType);
@@ -49,6 +50,7 @@ export function DayContextProvider({
   const { execute, isPending } = useServerAction(getDays);
   const getNewDietAction = useServerAction(getDietByIdAction);
 
+  const isDietPending = getNewDietAction.isPending;
 	async function handleDateChange(date: Date, newDaysData?: getDayDTO[]) {
 		if (newDaysData) {
 			setDayData(getDay(date, newDaysData));
@@ -108,6 +110,7 @@ export function DayContextProvider({
         isPending,
         setDayData,
         setDaysData,
+        isDietPending
       }}
     >
       {children}
