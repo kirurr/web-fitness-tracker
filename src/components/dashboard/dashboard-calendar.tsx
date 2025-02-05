@@ -30,7 +30,7 @@ export default function DashboardCalendarPopover({
   return (
     <Popover open={isOpen} onOpenChange={(value) => setIsOpen(value)}>
       <PopoverTrigger asChild>
-        <Button disabled={isPending} size="lg" variant="outline">
+        <Button className="mx-auto" disabled={isPending} size="lg" variant="outline">
           {date.toDateString() == new Date().toDateString()
             ? "Today"
             : date.toDateString()}

@@ -9,10 +9,10 @@ export default async function Dashboard() {
   if (!session) redirect("/signin");
 
   return (
-    <section className="grid grid-cols-2 grid-rows-2 gap-8">
+    <section className="grid lg:grid-cols-2 lg:grid-rows-2 gap-8">
       <BurntCalories />
-      <IntakeCalories />
-			<Water className="col-span-2 w-[calc(50%-2rem)] mx-auto" />
+      <IntakeCalories className="my-8 lg:my-0" />
+			<Water className="lg:col-span-2 lg:w-[calc(50%-2rem)] mx-auto" />
     </section>
   );
 }

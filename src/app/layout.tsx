@@ -3,6 +3,7 @@ import { Sora, Open_Sans } from "next/font/google";
 
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -26,10 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sora.variable} ${openSans.variable} antialiased w-full`}
+        className={`${sora.variable} ${openSans.variable} flex min-h-screen w-full flex-col antialiased`}
       >
-				<Navbar />
-        {children}
+        <Navbar />
+        <main className="mx-auto max-w-screen-lg w-full px-2 lg:px-0 py-8">{children}</main>
+        <Footer />
       </body>
     </html>
   );

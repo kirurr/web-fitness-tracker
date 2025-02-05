@@ -13,7 +13,7 @@ export default function IntakeCalories({  className }: { className?: string }) {
   const caloriesForIntake = Math.round(caloriesForDay * diet.goal!.value);
   const caloriesIntake = dayData ? dayData.calories_intake : 0;
   return (
-    <div className={cn("flex gap-8 rounded-xl p-4 shadow-lg bg-[#ba95f4]/10", className)}>
+    <div className={cn("flex flex-col lg:flex-row items-center lg:items-start gap-8 rounded-xl p-4 shadow-lg bg-[#ba95f4]/10", className)}>
       <CircularProgress
         progress={(caloriesIntake / caloriesForIntake) * 100}
         strokeWidth={20}
@@ -21,7 +21,7 @@ export default function IntakeCalories({  className }: { className?: string }) {
         color="text-primary"
 				backgroundColor="text-[#ba95f4]/30"
       />
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col items-center lg:items-start justify-center">
         <h2>Calories intake</h2>
         <p>
           <span className="text-muted-foreground">Calories to consume:</span> {caloriesForIntake}

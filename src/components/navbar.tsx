@@ -1,21 +1,10 @@
 import type React from "react";
 import Link from "next/link";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetPortal,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
 import { Button } from "./ui/button";
-import { Menu, User2 } from "lucide-react";
+import { User2 } from "lucide-react";
 import { auth } from "@/auth";
-import { Avatar, AvatarImage } from "./ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import NavbarMobileMenu from "./navbar-mobile-menu";
 
 const Navbar: React.FC = async () => {
   const session = await auth();
@@ -47,7 +36,7 @@ const Navbar: React.FC = async () => {
                       Dashboard
                     </Button>
                   </Link>
-                  <Link href="profile">
+                  <Link href="/profile">
                     <Avatar>
                       <AvatarImage src={session.user.image ?? ""} />
                       <AvatarFallback className="">
@@ -65,51 +54,7 @@ const Navbar: React.FC = async () => {
               )}
             </div>
           </div>
-          <Sheet>
-            <SheetTrigger className="block lg:hidden">
-              <Menu />
-            </SheetTrigger>
-            <SheetPortal>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Sheet Title</SheetTitle>
-                  <SheetDescription>Sheet Description</SheetDescription>
-                </SheetHeader>
-
-                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                  <Link
-                    href="/"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:text-gray-600"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:text-gray-600"
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="/services"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:text-gray-600"
-                  >
-                    Services
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:text-gray-600"
-                  >
-                    Contact
-                  </Link>
-                </div>
-                <SheetFooter>
-                  <SheetClose asChild>
-                    <Button type="submit">Save changes</Button>
-                  </SheetClose>
-                </SheetFooter>
-              </SheetContent>
-            </SheetPortal>
-          </Sheet>
+          <NavbarMobileMenu isUser={!!session?.user} />
         </div>
       </div>
     </nav>

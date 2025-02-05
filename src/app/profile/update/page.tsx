@@ -13,11 +13,11 @@ export default async function page() {
   }
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center lg:mx-auto lg:max-w-screen-md">
+    <section className="flex flex-col items-center justify-center mx-auto max-w-screen-md">
       <Suspense fallback={<LoaderCircle size={50} className="animate-spin" />}>
         <Wrapper userId={session.user.id} />
       </Suspense>
-    </main>
+    </section>
   );
 }
 

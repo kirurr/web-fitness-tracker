@@ -14,7 +14,7 @@ export default function BurntCalories({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex gap-8 rounded-xl bg-[#43acf5]/10 p-4 shadow-lg",
+        "flex flex-col lg:flex-row items-center lg:items-start gap-8 rounded-xl bg-[#43acf5]/10 p-4 shadow-lg",
         className,
       )}
     >
@@ -25,7 +25,7 @@ export default function BurntCalories({ className }: { className?: string }) {
         color="text-[#348de9]"
         backgroundColor="text-[#43acf5]/30"
       />
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col items-center lg:items-start justify-center">
         <h2>Burnt calories</h2>
         <p>
           <span className="text-muted-foreground">Calories to burn:</span>{" "}
