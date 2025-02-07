@@ -141,7 +141,9 @@ export default function BurntCaloriesForm({
     );
 
     queryClient.invalidateQueries({ queryKey: ["dayActivities"] });
+    form.reset();
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

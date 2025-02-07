@@ -11,6 +11,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.config({
+    plugins: ["eslint-plugin-react-compiler"],
     extends: [
       "next/core-web-vitals",
       "next/typescript",
@@ -20,6 +21,7 @@ const eslintConfig = [
     rules: {
       "@typescript-eslint/ban-ts-ignore": "off",
       "@typescript-eslint/ban-ts-comment": "off",
+      "react-compiler/react-compiler": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

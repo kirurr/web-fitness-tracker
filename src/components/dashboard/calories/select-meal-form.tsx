@@ -23,11 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  createMeal,
-  createDay,
-  updateDay,
-} from "@/day/day-actions";
+import { createMeal, createDay, updateDay } from "@/day/day-actions";
 import { findMeal, getMealById } from "@/fatsecret/fatsecret-actions";
 import { createMealFormSchema } from "@/lib/schemas";
 import { useServerActionQuery } from "@/lib/server-action-hooks";
@@ -35,7 +31,7 @@ import { calculateMealCalories, cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, LoaderCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useServerAction } from "zsa-react";
@@ -56,7 +52,7 @@ export default function SelectMealForm() {
     resolver: zodResolver(createMealFormSchema),
     defaultValues: {
       weight: "",
-      food: {}
+      food: undefined,
     },
     mode: "onBlur",
   });
@@ -134,6 +130,7 @@ export default function SelectMealForm() {
     setDaysData((days) =>
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
+    form.reset();
   }
 
   return (
@@ -249,7 +246,7 @@ export default function SelectMealForm() {
             </FormItem>
           )}
         />
-        <Button disabled={isPending} className="mt-4 mr-4" type="submit">
+        <Button disabled={isPending} className="mr-4 mt-4" type="submit">
           <LoaderCircle
             className={cn("animate-spin", !isPending && "hidden")}
           />
