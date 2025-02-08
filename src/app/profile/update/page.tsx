@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Update your data",
+  title: "Update user data",
 };
 
 export default async function page() {
