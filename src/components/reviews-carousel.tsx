@@ -47,8 +47,8 @@ export default function ReviewsCarousel() {
           <Review key={review.name} {...review} />
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="lg:inline-flex hidden" />
+      <CarouselNext className="lg:inline-flex hidden" />
     </Carousel>
   );
 }
