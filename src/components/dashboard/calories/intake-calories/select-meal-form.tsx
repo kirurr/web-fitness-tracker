@@ -35,9 +35,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useServerAction } from "zsa-react";
-import { useDayContext } from "../day-context";
+import { useDayContext } from "../../day-context";
+import { getMealDTO } from "@/fatsecret/fatsecret-dto";
 
-export default function SelectMealForm() {
+export default function SelectMealForm({
+  addMeal,
+}: {
+  addMeal: (meal: getMealDTO) => void;
+}) {
   const [search, setSearch] = useState("");
 
   const { data, isLoading, error, isError } = useServerActionQuery(findMeal, {
@@ -45,6 +50,7 @@ export default function SelectMealForm() {
     queryKey: ["meal", search],
     enabled: !!search,
   });
+
   const queryClient = useQueryClient();
   queryClient.cancelQueries({ queryKey: ["meal", search] });
 
@@ -101,7 +107,7 @@ export default function SelectMealForm() {
     const portion =
       +mealData.servings.serving[0].metric_serving_amount * numberOfUnits;
 
-    const [_meal, mealErr] = await createMealAction.execute({
+    const [meal, mealErr] = await createMealAction.execute({
       name: data.food.food_name,
       weight: +data.weight,
       calories: calories,
@@ -124,12 +130,12 @@ export default function SelectMealForm() {
     });
     if (updateDayErr) throw updateDayErr;
 
-    queryClient.invalidateQueries({ queryKey: ["dayMeals"] });
-
     setDayData(updateDayData);
     setDaysData((days) =>
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
+
+    addMeal(meal);
     form.reset();
   }
 

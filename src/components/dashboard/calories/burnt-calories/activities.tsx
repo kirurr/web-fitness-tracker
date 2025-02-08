@@ -1,11 +1,6 @@
 "use client";
-import {
-  deleteDayActivity,
-  getDayActivities,
-  updateDay,
-} from "@/day/day-actions";
-import { useServerActionQuery } from "@/lib/server-action-hooks";
-import { useDayContext } from "../day-context";
+import { deleteDayActivity, updateDay } from "@/day/day-actions";
+import { useDayContext } from "../../day-context";
 import { getDayActivityDTO } from "@/day/day-dto";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -14,36 +9,30 @@ import { LoaderCircle, X } from "lucide-react";
 import { useServerAction } from "zsa-react";
 import { calculateMETCalories, cn } from "@/lib/utils";
 import { getUserDataDTO } from "@/user-data/user-data-dto";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
 
-export default function Activities({ userData }: { userData: getUserDataDTO }) {
-  const { dayData } = useDayContext();
-  const { data, isFetching } = useServerActionQuery(getDayActivities, {
-    enabled: !!dayData,
-    input: {
-      id: dayData ? dayData.id : 0,
-    },
-    queryKey: ["dayActivities", dayData],
-    placeholderData: (prev) => prev,
-    staleTime: Infinity,
-  });
-
-  const queryClient = useQueryClient();
-  if (!dayData) return null;
-  if (!data) return null;
-
-  if (isFetching)
+export default function Activities({
+  userData,
+  isPending,
+  removeActivity,
+  activities,
+}: {
+  userData: getUserDataDTO;
+  isPending: boolean;
+  removeActivity: (activity: getDayActivityDTO) => void;
+  activities: getDayActivityDTO[];
+}) {
+  if (isPending)
     return (
       <LoaderCircle className="mx-auto animate-spin text-border" size={40} />
     );
   return (
     <ul className="space-y-4">
-      {data.map((item) => (
+      {activities.map((item) => (
         <Activity
           data={item}
           key={item.day_activity.id}
           weight={userData.weight}
-          queryClient={queryClient}
+          removeActivity={removeActivity}
         />
       ))}
     </ul>
@@ -53,11 +42,11 @@ export default function Activities({ userData }: { userData: getUserDataDTO }) {
 function Activity({
   data,
   weight,
-  queryClient,
+  removeActivity,
 }: {
   data: getDayActivityDTO;
   weight: number;
-  queryClient: QueryClient;
+  removeActivity: (activity: getDayActivityDTO) => void;
 }) {
   const { dayData, setDayData, setDaysData: setDays } = useDayContext();
   const form = useForm();
@@ -97,7 +86,7 @@ function Activity({
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
 
-    queryClient.invalidateQueries({ queryKey: ["dayActivities"] });
+    removeActivity(data);
   }
   return (
     <li className="relative flex items-center justify-between rounded-lg border-2 p-2">

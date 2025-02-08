@@ -1,6 +1,5 @@
-import IntakeCalories from "@/components/dashboard/calories/intake-calories";
-import Meals from "@/components/dashboard/calories/meals";
-import SelectMealForm from "@/components/dashboard/calories/select-meal-form";
+import IntakeCalories from "@/components/dashboard/calories/intake-calories/intake-calories";
+import IntakeCaloriesWrapper from "@/components/dashboard/calories/intake-calories/intake-calories-wrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -32,11 +31,8 @@ export default async function IntakeCaloriesPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <section className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:grid-rows-2">
-        <SelectMealForm />
         <IntakeCalories className="lg:row-start-auto row-start-1" showButton={false} />
-        <div className="w-full self-start">
-          <Meals />
-        </div>
+        <IntakeCaloriesWrapper />  
       </section>
     </>
   );

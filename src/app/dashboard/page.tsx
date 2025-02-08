@@ -1,5 +1,5 @@
-import BurntCalories from "@/components/dashboard/calories/burnt-calories";
-import IntakeCalories from "@/components/dashboard/calories/intake-calories";
+import BurntCalories from "@/components/dashboard/calories/burnt-calories/burnt-calories";
+import IntakeCalories from "@/components/dashboard/calories/intake-calories/intake-calories";
 import Water from "@/components/dashboard/water/water";
 import {
   Breadcrumb,

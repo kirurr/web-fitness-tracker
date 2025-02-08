@@ -1,37 +1,35 @@
 "use client";
-import { useServerActionQuery } from "@/lib/server-action-hooks";
-import { useDayContext } from "../day-context";
-import { deleteMeal, getMealsByDayId, updateDay } from "@/day/day-actions";
+import { useDayContext } from "../../day-context";
+import { deleteMeal as deleteMealA, updateDay } from "@/day/day-actions";
 import { getMealDTO } from "@/fatsecret/fatsecret-dto";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { calculateMealCalories, cn } from "@/lib/utils";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle, X } from "lucide-react";
 
-export default function Meals() {
-  const { dayData } = useDayContext();
-  const { data, isFetching } = useServerActionQuery(getMealsByDayId, {
-    enabled: !!dayData,
-    input: dayData ? dayData.id : 0,
-    queryKey: ["dayMeals", dayData],
-  });
-  const queryClient = useQueryClient();
+export default function Meals(
+  {
+    meals,
+    deleteMeal,
+    isPending
+  }: {
+    meals: getMealDTO[];
+    deleteMeal: (meal: getMealDTO) => void;
+    isPending: boolean;
+  }
 
-  if (!dayData) return null;
-  if (!data) return null;
-
-  if (isFetching)
+) {
+  if (isPending)
     return (
       <LoaderCircle className="mx-auto animate-spin text-border" size={40} />
     );
 
   return (
     <ul className="space-y-4">
-      {data.map((item) => (
-        <Meal key={item.id} data={item} queryClient={queryClient} />
+      {meals.map((item) => (
+        <Meal key={item.id} data={item} deleteMeal={deleteMeal} />
       ))}
     </ul>
   );
@@ -39,15 +37,15 @@ export default function Meals() {
 
 function Meal({
   data,
-  queryClient,
+  deleteMeal
 }: {
   data: getMealDTO;
-  queryClient: QueryClient;
+  deleteMeal: (meal: getMealDTO) => void;
 }) {
   const { dayData, setDayData, setDaysData: setDays } = useDayContext();
   const form = useForm();
 
-  const deleteMealAction = useServerAction(deleteMeal);
+  const deleteMealAction = useServerAction(deleteMealA);
   const updateDayAction = useServerAction(updateDay);
 
   const calories = calculateMealCalories(
@@ -80,7 +78,7 @@ function Meal({
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
 
-    queryClient.invalidateQueries({ queryKey: ["dayMeals"] });
+    deleteMeal(data);
   }
 
   return (

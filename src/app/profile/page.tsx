@@ -22,7 +22,7 @@ export default async function Profile() {
     userDataRepository.getByUserId(session.user.id),
     dietRepository.getByUserId(session.user.id),
   ]);
-  const currentDiet = diets.find((diet) => diet.diet.expired !== null)!;
+  const currentDiet = diets.find((diet) => diet.diet.expired === null)!;
 
   return (
     <>

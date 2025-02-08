@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
-import Activities from "@/components/dashboard/calories/activities";
-import BurntCalories from "@/components/dashboard/calories/burnt-calories";
-import BurntCaloriesForm from "@/components/dashboard/calories/burnt-calories-form";
+import BurntCalories from "@/components/dashboard/calories/burnt-calories/burnt-calories";
+import BurntCaloriesWrapper from "@/components/dashboard/calories/burnt-calories/burnt-calories-wrapper";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -40,11 +39,8 @@ export default async function BurntCaloriesPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <section className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:grid-rows-2">
-        <BurntCaloriesForm userData={userData.user_data} />
         <BurntCalories showButton={false} className="row-start-1 lg:row-auto" />
-        <div className="w-full self-start">
-          <Activities userData={userData.user_data} />
-        </div>
+        <BurntCaloriesWrapper userData={userData.user_data} />
       </section>
     </>
   );

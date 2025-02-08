@@ -1,7 +1,7 @@
 "use client";
 
 import { CircularProgress } from "@/components/ui/circular-progress";
-import { useDayContext } from "../day-context";
+import { useDayContext } from "../../day-context";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";

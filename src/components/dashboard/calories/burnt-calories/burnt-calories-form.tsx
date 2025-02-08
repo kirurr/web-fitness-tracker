@@ -30,7 +30,7 @@ import {
   getMETActivities,
   updateDay,
 } from "@/day/day-actions";
-import { getMetActivityDTO } from "@/day/day-dto";
+import { getDayActivityDTO, getMetActivityDTO } from "@/day/day-dto";
 import { createDayActivityFormSchema } from "@/lib/schemas";
 import { calculateMETCalories, cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,13 +39,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useServerAction } from "zsa-react";
-import { useDayContext } from "../day-context";
+import { useDayContext } from "../../day-context";
 import { getUserDataDTO } from "@/user-data/user-data-dto";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function BurntCaloriesForm({
+  addActivity,
   userData,
 }: {
+  addActivity: (activity: getDayActivityDTO) => void;
   userData: getUserDataDTO;
 }) {
   const [activities, setActivities] = useState<getMetActivityDTO[]>([]);
@@ -68,8 +69,6 @@ export default function BurntCaloriesForm({
     },
     mode: "onBlur",
   });
-
-  const queryClient = useQueryClient();
 
   const getMETActivitiesAction = useServerAction(getMETActivities);
   const createDayActivityAction = useServerAction(createDayActivity);
@@ -111,7 +110,7 @@ export default function BurntCaloriesForm({
       setDays((days) => [...days, data]);
     }
 
-    const [_dayActivityData, dayActivityErr] =
+    const [dayActivityData, dayActivityErr] =
       await createDayActivityAction.execute({
         day_id: day.id,
         met_activity_id: +formData.met_activity_id,
@@ -139,8 +138,8 @@ export default function BurntCaloriesForm({
     setDays((days) =>
       days.map((day) => (day.id === updateDayData.id ? updateDayData : day)),
     );
+    addActivity({ day_activity: dayActivityData, met_activity: metActivity });
 
-    queryClient.invalidateQueries({ queryKey: ["dayActivities"] });
     form.reset();
   }
 
