@@ -32,7 +32,7 @@ export default function RootLayout({
         <header>
           <Navbar />
         </header>
-        <main className="mx-auto h-full w-full max-w-screen-lg grow px-2 py-8 lg:px-0">
+        <main className="mx-auto relative h-full w-full max-w-screen-lg grow px-2 py-8 lg:px-0">
           {children}
         </main>
         <Footer />
