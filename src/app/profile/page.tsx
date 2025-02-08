@@ -23,7 +23,7 @@ export default async function Profile() {
   return (
     <>
       <section className="mx-auto max-w-screen-md">
-        <h1 className="hidden text-center lg:block w-fit mx-auto">Your profile</h1>
+        <h1 className="hidden text-center lg:block w-fit mx-auto">Your <span className="text-primary">profile</span></h1>
         <div className="flex flex-col gap-4 p-4 lg:flex-row">
           <div className="flex flex-col items-center gap-4 space-y-2 rounded-lg p-4 shadow-xl lg:flex-row">
             <Avatar className="h-24 w-24">
