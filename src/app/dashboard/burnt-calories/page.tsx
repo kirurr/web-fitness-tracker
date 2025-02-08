@@ -14,6 +14,10 @@ import userDataRepository from "@/user-data/user-data-repository";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "Burnt calories",
+};
+
 export default async function BurntCaloriesPage() {
   const session = await auth();
 

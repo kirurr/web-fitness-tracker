@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
+export const metadata = {
+  title: "About",
+};
+
 export default function About() {
   return (
     <section className="grid grid-cols-1 gap-8 md:grid-cols-2">

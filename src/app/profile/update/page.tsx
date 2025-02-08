@@ -6,6 +6,10 @@ import { LoaderCircle } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+export const metadata = {
+  title: "Update your data",
+};
+
 export default async function page() {
   const session = await auth();
   if (!session) {

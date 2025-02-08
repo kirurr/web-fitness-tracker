@@ -2,6 +2,10 @@ import { auth } from "@/auth";
 import SignIn from "@/components/sign-in";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "Sign in",
+};
+
 export default async function page() {
   const session = await auth();
   if (session) redirect("/dashboard");

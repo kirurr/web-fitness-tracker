@@ -8,6 +8,10 @@ import { User2 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "Profile",
+};
+
 export default async function Profile() {
   const session = await auth();
   if (!session) {

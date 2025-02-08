@@ -11,6 +11,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Intake calories",
+};
+
 export default async function IntakeCaloriesPage() {
   return (
     <>

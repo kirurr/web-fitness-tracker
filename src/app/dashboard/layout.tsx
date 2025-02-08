@@ -6,6 +6,10 @@ import { dayRepository } from "@/day/day-repository";
 import { dietRepository } from "@/diet/diet-repository";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "Dashboard",
+};
+
 export default async function DashboardLayout({
   children,
 }: {
