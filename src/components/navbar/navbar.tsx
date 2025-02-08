@@ -1,5 +1,4 @@
 import type React from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { User2 } from "lucide-react";
 import { auth } from "@/auth";
@@ -13,21 +12,21 @@ const Navbar: React.FC = async () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" className="text-3xl font-bold">
+            <a href="/" className="text-3xl font-bold">
               Fitness<span className="text-primary">Tracker</span>
-            </Link>
+            </a>
           </div>
 
           <div className="hidden lg:block">
             <div className="ml-10 flex items-center space-x-4">
-              <Link href="/about">
+              <a href="/about">
                 <Button variant="link" size="sm" className="text-foreground">
                   About
                 </Button>
-              </Link>
+              </a>
               {session?.user ? (
                 <>
-                  <Link className="" href="/dashboard">
+                  <a className="" href="/dashboard">
                     <Button
                       variant="link"
                       size="sm"
@@ -35,22 +34,22 @@ const Navbar: React.FC = async () => {
                     >
                       Dashboard
                     </Button>
-                  </Link>
-                  <Link href="/profile">
+                  </a>
+                  <a href="/profile" className="hover:ring-2 ring-offset-2 ring-primary rounded-full">
                     <Avatar>
                       <AvatarImage src={session.user.image ?? ""} />
                       <AvatarFallback className="">
                         <User2 />
                       </AvatarFallback>
                     </Avatar>
-                  </Link>
+                  </a>
                 </>
               ) : (
-                <Link href="/signin">
+                <a href="/signin">
                   <Button variant="link" size="sm" className="text-foreground">
                     Sign in
                   </Button>
-                </Link>
+                </a>
               )}
             </div>
           </div>

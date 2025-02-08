@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
-import { Baby } from "lucide-react";
-import MainPageCarousel from "@/components/main-page-carousel";
+import { Flame, GlassWater, LucideProps, Ham } from "lucide-react";
+import ReviewsCarousel from "@/components/reviews-carousel";
 import {
   Accordion,
   AccordionContent,
@@ -10,12 +9,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 export default function Home() {
   return (
     <>
       <Hero />
       <Features />
-      <Carousel />
+      <Reviews />
       <Info />
     </>
   );
@@ -23,17 +23,20 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section className="grid text-center md:text-start grid-cols-1 grid-rows-[repeat(4,minmax(20rem,1fr))] items-center gap-8 md:grid-cols-2 md:grid-rows-[repeat(2,minmax(20rem,1fr))]">
+    <section className="grid grid-cols-1 grid-rows-[repeat(4,minmax(20rem,1fr))] items-center lg:gap-8 gap-2 text-center md:grid-cols-2 md:grid-rows-[repeat(2,minmax(20rem,1fr))] md:text-start">
       <div>
-        <h1 className="mb-2 text-4xl md:text-6xl">Lorem ipsum dolor sit amet.</h1>
-        <p className="md:text-xl text-muted-foreground">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum quae
-          enim quisquam ipsam! Labore, ullam voluptatem placeat fuga tempore
-          cumque.
+        <h1 className="text-4xl md:text-5xl">
+          Reach your goals with the Fitness
+          <span className="text-primary">Tracker</span>
+        </h1>
+        <p className="my-8 text-muted-foreground md:text-xl">
+          Track your activity, sleep, and health in real-time. Personalized
+          recommendations and motivation will help you become better every day.
+          Start your journey to the best shape of your life today!
         </p>
-        <Link href="/signin" className="mx-auto mt-8 block size-fit">
+        <a href="/signin" className="mx-auto block size-fit">
           <Button size="lg">Start tracking now</Button>
-        </Link>
+        </a>
       </div>
       <div>
         <Image
@@ -54,13 +57,13 @@ function Hero() {
         />
       </div>
       <div>
-        <h2 className="mb-2 text-4xl">
-          Lorem, ipsum dolor sit amet consectetur adipisicing.
+        <h2 className="mb-8 text-4xl">
+          Your personal fitness companion for a healthier lifestyle
         </h2>
         <p className="text-xl text-muted-foreground">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum quae
-          enim quisquam ipsam! Labore, ullam voluptatem placeat fuga tempore
-          cumque.
+          Stay motivated, track progress, and achieve results with our advanced
+          fitness tracker. Whether you&apos;re working out, resting, or on the
+          go, it’s designed to keep up with your life.
         </p>
       </div>
     </section>
@@ -69,81 +72,98 @@ function Hero() {
 
 function Features() {
   return (
-    <section className="py-24 text-center">
-      <h2 className="my-8">Lorem ipsum dolor sit.</h2>
-      <div className="grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 gap-8">
-        <div className="flex flex-col items-center gap-4">
-          <div className="size-fit rounded-full bg-card p-2 ring ring-accent">
-            <Baby size={130} />
-          </div>
-          <h3>Lorem ipsum dolor sit amet.</h3>
-          <p className="text-muted-foreground">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis,
-            aspernatur.
-          </p>
-        </div>
-        <div className="flex flex-col items-center gap-4">
-          <div className="size-fit rounded-full bg-card p-2 ring ring-accent">
-            <Baby size={130} />
-          </div>
-          <h3>Lorem ipsum dolor sit amet.</h3>
-          <p className="text-muted-foreground">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis,
-            aspernatur.
-          </p>
-        </div>
-        <div className="flex flex-col items-center gap-4">
-          <div className="size-fit rounded-full bg-card p-2 ring ring-accent">
-            <Baby size={130} />
-          </div>
-          <h3>Lorem ipsum dolor sit amet.</h3>
-          <p className="text-muted-foreground">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis,
-            aspernatur.
-          </p>
-        </div>
+    <section className="lg:py-24 py-12 text-center">
+      <h2 className="mb-12">
+        Why our fitness tracker is your perfect companion
+      </h2>
+      <div className="grid grid-cols-1 grid-rows-3 gap-8 md:grid-cols-3 md:grid-rows-1">
+        <Feature
+          heading="Tracking Calories Intake"
+          paragraph="Count your calories intake by our smart meals system"
+          Icon={Ham}
+        />
+        <Feature
+          heading="Tracking Calories Burnt"
+          paragraph="Keep track of your calories burnt by wide range of activities"
+          Icon={Flame}
+        />
+        <Feature
+          heading="Tracking Water Intake"
+          paragraph="Track your water intake by our smart water system"
+          Icon={GlassWater}
+        />
       </div>
     </section>
   );
 }
 
-function Carousel() {
+type FeatureProps = {
+  heading: string;
+  paragraph: string;
+  Icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+};
+
+function Feature({ heading, paragraph, Icon }: FeatureProps) {
   return (
-    <section className="py-24 text-center">
-      <h2>Lorem ipsum dolor sit.</h2>
-      <MainPageCarousel />
-      <Link href="/signin" className="mx-auto mt-8 block size-fit">
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex size-fit items-center justify-center rounded-full bg-card p-4 ring ring-accent">
+        <Icon size={130} className="text-primary" />
+      </div>
+      <h3>{heading}</h3>
+      <p className="text-muted-foreground">{paragraph}</p>
+    </div>
+  );
+}
+function Reviews() {
+  return (
+    <section className="lg:py-24 py-12 text-center">
+      <h2>See reviews from our users</h2>
+      <ReviewsCarousel />
+      <a href="/signin" className="mx-auto mt-8 block size-fit">
         <Button size="lg">Start tracking now</Button>
-      </Link>
+      </a>
     </section>
   );
 }
 
 function Info() {
   return (
-    <section className="py-24">
-      <h2 className="text-center">Lorem ipsum dolor sit.</h2>
-      <Card className="mx-auto mt-8 lg:w-2/3">
+    <section className="lg:py-24 py-12">
+      <h2 className="text-center">Frequently asked questions</h2>
+      <Card className="mx-auto mt-12 lg:w-2/3">
         <CardContent>
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionTrigger>
+                How does the web app track my fitness?
+              </AccordionTrigger>
               <AccordionContent className="text-lg">
-                Yes. It adheres to the WAI-ARIA design pattern.
+                Our web app uses advanced algorithms to sync with your fitness
+                tracker or manually input data. It tracks your activity, heart
+                rate, sleep, and more, providing detailed insights and
+                personalized recommendations to help you reach your goals.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionTrigger>
+                Is the web app compatible with my device?
+              </AccordionTrigger>
               <AccordionContent className="text-lg">
-                Yes. It comes with default styles that matches the other
-                components&apos; aesthetic.
+                Yes, the web app is fully responsive and works seamlessly on
+                desktops, tablets, and smartphones. Whether you&apos;re using Chrome,
+                Safari, or any other modern browser, you&apos;ll have access to all
+                features.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionTrigger>How secure is my data?</AccordionTrigger>
               <AccordionContent className="text-lg">
-                Yes. It&apos;s animated by default, but you can disable it if
-                you prefer.
+                Your data security is our top priority. All information is
+                encrypted and stored securely. We comply with the latest privacy
+                regulations to ensure your personal and fitness data is always
+                protected.
               </AccordionContent>
             </AccordionItem>
           </Accordion>

@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { Menu} from "lucide-react";
 import {
 	Sheet,
@@ -37,40 +36,40 @@ export default function NavbarMobileMenu({ isUser }: { isUser: boolean }) {
             <SheetDescription className="sr-only">Mobile menu</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-4">
-            <Link
+            <a
               href="/"
               className="font-semibold text-foreground hover:underline"
             >
               Home
-            </Link>
-            <Link
+            </a>
+            <a
               href="/about"
               className="font-semibold text-foreground hover:underline"
             >
               About
-            </Link>
+            </a>
             {isUser ? (
               <>
-                <Link
+                <a
                   href="/dashboard"
                   className="font-semibold text-foreground hover:underline"
                 >
                   Dashboard
-                </Link>
-                <Link
+                </a>
+                <a
                   href="/profile"
                   className="font-semibold text-foreground hover:underline"
                 >
                   Profile
-                </Link>
+                </a>
               </>
             ) : (
-              <Link
+              <a
                 href="/signin"
                 className="font-semibold text-foreground hover:underline"
               >
                 Sign in
-              </Link>
+              </a>
             )}
           </div>
         </SheetContent>

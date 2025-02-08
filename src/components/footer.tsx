@@ -1,66 +1,63 @@
-import Link from "next/link";
 import { auth } from "@/auth";
 
 export default async function Footer() {
   const session = await auth();
   return (
     <footer className="bg-accent p-4">
-      <section className="mx-auto divide-x-0 divide-y-2 lg:divide-y-0 lg:divide-x-2 flex flex-col lg:flex-row max-w-screen-lg gap-4 text-muted-foreground">
-        <div className="lg:w-1/2 py-4 lg:py-0 px-4">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum quas
-          aperiam doloremque delectus. Nam sit, ea itaque laudantium obcaecati
-          pariatur.
-        </div>
-        <div className="lg:w-1/2 lg:py-0 py-4 px-4">
-          <h3>Navigation</h3>
-          <nav>
-            <ul>
+      <nav>
+        <ul className="flex items-center justify-center gap-4 text-muted-foreground">
+          <li>
+            <a
+              href="/"
+              className="text-xl font-bold underline-offset-2 hover:underline"
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              href="/about"
+              className="text-xl font-bold underline-offset-2 hover:underline"
+            >
+              About
+            </a>
+          </li>
+          {session ? (
+            <>
               <li>
-                <Link href="/" className="underline-offset-2 hover:underline">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="underline-offset-2 hover:underline"
+                <a
+                  href="/dashboard"
+                  className="text-xl font-bold underline-offset-2 hover:underline"
                 >
-                  About
-                </Link>
+                  Dashboard
+                </a>
               </li>
-              {session ? (
-                <>
-                  <li>
-                    <Link
-                      href="/dashboard"
-                      className="underline-offset-2 hover:underline"
-                    >
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/profile"
-                      className="underline-offset-2 hover:underline"
-                    >
-                      Profile
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <li>
-                  <Link
-                    href="/signin"
-                    className="underline-offset-2 hover:underline"
-                  >
-                    Sign in
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </nav>
-        </div>
-      </section>
+              <li>
+                <a
+                  href="/profile"
+                  className="text-xl font-bold underline-offset-2 hover:underline"
+                >
+                  Profile
+                </a>
+              </li>
+            </>
+          ) : (
+            <li>
+              <a
+                href="/signin"
+                className="text-xl font-bold underline-offset-2 hover:underline"
+              >
+                Sign in
+              </a>
+            </li>
+          )}
+        </ul>
+      </nav>
+	  <div className="mx-auto w-fit my-8 flex gap-4">
+		  <a href="mailto:contact@fitnesstracker.com" className="text-center text-base text-primary hover:underline underline-offset-2">contact@fitnesstracker.com</a>
+		  <a href="tel:+441234567890" className="text-center text-base text-primary hover:underline underline-offset-2">+44 123 456 7890</a>
+	  </div>
+	  <p className="text-center text-base">© 2025 Fitness Tracker</p>
     </footer>
   );
 }
