@@ -59,14 +59,13 @@ export function DayContextProvider({
     }
     setDate(date);
 
-    if (date.getTime() < new Date(diet.diet.created).getTime()) {
+    if (date.getTime() < +diet.diet.created) {
       const newDiet = userDiets.find((item) => {
         if (!item.diet.expired) return false;
-        const dietCreatedTimestamp = new Date(item.diet.created).getTime();
-        const dietExpiredTimestamp = new Date(item.diet.expired).getTime();
-        const currentDietCreatedTimestamp = new Date(
-          diet?.diet.created,
-        ).getTime();
+        const dietCreatedTimestamp = +item.diet.created;
+        const dietExpiredTimestamp = +item.diet.expired;
+        const currentDietCreatedTimestamp = +diet?.diet.created;
+
         return (
           currentDietCreatedTimestamp <= dietExpiredTimestamp &&
           currentDietCreatedTimestamp > dietCreatedTimestamp

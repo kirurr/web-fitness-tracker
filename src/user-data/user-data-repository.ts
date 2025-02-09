@@ -21,14 +21,14 @@ const userDataRepository = {
       const calories = calculateCalories(userData, activities);
       const water = calculateWater(userData, activities);
 
-      const date = new Date().toDateString();
+      const date = new Date().getTime();
       await trx
         .insert(dietTable)
         .values({
 					goal_id: goalId,
 					calories,
 					water,
-					created: date,
+					created: date.toString(),
 					user_id: user_id
 				})
         .returning();
@@ -52,8 +52,8 @@ const userDataRepository = {
       const calories = calculateCalories(updatedUserData, activities);
       const water = calculateWater(updatedUserData, activities);
 
-      const date = new Date().toDateString();
-      await trx.update(dietTable).set({expired: date}).where(eq(dietTable.id, diet_id));
+      const date = new Date().getTime();
+      await trx.update(dietTable).set({expired: date.toString()}).where(eq(dietTable.id, diet_id));
 
       await trx
         .insert(dietTable)
@@ -61,7 +61,7 @@ const userDataRepository = {
 					goal_id: goal_id,
 					calories,
 					water,
-					created: date,
+					created: date.toString(),
 					user_id: user_id
 				})
         .returning();

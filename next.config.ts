@@ -5,9 +5,6 @@ const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: true
   },
-  reactComponentAnnotation: {
-    enabled: process.env.NODE_ENV === 'development',
-  },
   reactStrictMode: true,
 };
 
