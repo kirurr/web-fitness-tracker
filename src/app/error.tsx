@@ -5,21 +5,18 @@ import { useEffect } from "react";
 
 export default function Error({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
 }) {
   useEffect(() => {
     console.error(error);
   }, [error]);
 
   return (
-    <section>
-      <h1 className="text-center">Something went wrong!</h1>
-      <Button onClick={() => reset()}>Try again</Button>
-      <a href="/" className="text-center">
-        Go back home
+    <section className="absolute inset-0 flex size-full flex-col items-center justify-center">
+      <h1 className="mb-8 text-center">Oops! 500 Something went wrong</h1>
+      <a href="/">
+        <Button>Go back home</Button>
       </a>
     </section>
   );
