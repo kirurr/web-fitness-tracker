@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
     enabled: process.env.NODE_ENV === 'development',
   },
   reactStrictMode: true,
+  reactComponentAnnotation: {
+    enabled: process.env.NODE_ENV === 'development',
+  },
+ 
 };
 
 export default nextConfig;
