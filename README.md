@@ -56,6 +56,12 @@ Then, you will need to fill the url origins
 
 ![google auth client url origins image](./.github/images/google-auth-client-url-origins.png)
 
+For local environment add:
+
+Origin: http://localhost:4000
+
+Redirect Url: http://localhost:4000/api/auth/callback/google
+
 `**Note:** For the auth to work on hosting provider, you need to add the url of the site to the origins`
 
 For example:
