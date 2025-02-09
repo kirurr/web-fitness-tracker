@@ -36,7 +36,6 @@ export const createDayFormSchema = z.object({
   water_intake: z.string(),
 });
 
-//export const updateDaySchema = createUpdateSchema(dayTable);
 export const updateDaySchema = z.object({
   id: z.number(),
   index: z.number().optional(),

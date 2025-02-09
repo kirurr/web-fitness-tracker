@@ -1,36 +1,118 @@
+### Web Fitness Tracker
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Dependencies
 
-First, run the development server:
+You need to have node version 22 or higher
+
+[Node js site](https://nodejs.org/)
+
+## Installation
+
+First, copy the repository to your local machine.
+
+```bash
+git clone git@github.com:kirurr/web-fitness-tracker.git
+```
+
+Then, run install script
+
+```bash
+npm install --legacy-peer-deps
+```
+`**Note:** --legacy-peer-deps is required because of the new React version`
+
+## Getting ENV variables
+
+In this project, we use some public APIs.
+
+You can reference the [.env.example](./.env.example) file for the variable names.
+
+Create a `.env.local` file in the root directory and add the following variables:
+
+### Turso
+
+Firstly, go to [Turso](https://turso.tech/) and create an account.
+
+Then, create the database
+![database creation image](./.github/images/database-creation.png)
+
+After that, you can get database url and create token
+![getting database url and token image](./.github/images/database-data.png)
+
+Then, add the following variables to your `.env.local` file
+
+### Google OAuth
+Following the auth guide in auth.js [docs](https://authjs.dev/getting-started/authentication/oauth?framework=next-js):
+
+You can access google dashboard by this [url](https://console.cloud.google.com/auth/clients)
+
+You will need to create a new auth client
+Select "Web application" and fill the form
+
+![google auth client creation image](./.github/images/google-auth-client-creation.png)
+
+Then, you will need to fill the url origins
+
+![google auth client url origins image](./.github/images/google-auth-client-url-origins.png)
+
+`**Note:** For the auth to work on hosting provider, you need to add the url of the site to the origins`
+
+For example:
+
+Origin: https://web-fitness-tracker.vercel.app
+
+Redirect url: https://web-fitness-tracker.vercel.app/api/auth/callback/google
+
+After creating the client, grab the client ID and client secret from the client page
+
+![google auth client id and secret image](./.github/images/google-auth-client-id-and-secret.png)
+
+And add them to your `.env.local` file
+
+### Auth Secret
+
+For the auth to work, you need to generate Auth secret and add it to your `.env.local file`
+
+In the local environment, you can use the following command to generate the secret
+
+```bash
+npx auth secret
+```
+
+For the deployment, you need to generate the secret and add it to the environment variable of your hosting provider
+
+Follow the gide on auth.js [docs](https://next-auth.js.org/deployment#vercel)
+
+### Fatsecret API
+
+For the meals search to work, you need to create a [fatsecret](https://platform.fatsecret.com/) account
+
+
+Then, you need to get your REST API OAuth 2.0 Client ID and Client Secret: [link]( https://platform.fatsecret.com/my-account/api-key)
+
+![fatsecret api key creation image](./.github/images/fatsecret-api-key-creation.png)
+
+Then, you need to add your site ip to the allowed IPs [list](https://platform.fatsecret.com/my-account/ip-restrictions)
+
+
+
+## Starting the project
+After all the configurations, you can start the project
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:4000](http://localhost:4000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Or, you can build production ready bundle
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
+And start server
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run start
+```

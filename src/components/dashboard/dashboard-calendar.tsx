@@ -1,4 +1,3 @@
-import { DayContentProps } from "react-day-picker";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
@@ -55,17 +54,8 @@ export default function DashboardCalendarPopover({
           modifiersClassNames={{ hasData: "border-2" }}
           onMonthChange={(month) => setMonth(month)}
           mode="single"
-          components={{
-            DayContent: Day,
-          }}
         />
       </PopoverContent>
     </Popover>
   );
-}
-
-function Day(props: DayContentProps) {
-  //eslint-disable-next-line
-  const { date, displayMonth, activeModifiers } = props;
-  return <>{date.getDate()}</>;
 }

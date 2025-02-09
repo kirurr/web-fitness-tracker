@@ -23,7 +23,7 @@ type DayContextType = {
   isPending: boolean;
   setDayData: Dispatch<SetStateAction<getDayDTO | undefined>>;
   setDaysData: Dispatch<SetStateAction<getDayDTO[]>>;
-  isDietPending: boolean
+  isDietPending: boolean;
 };
 
 const DayContext = createContext<DayContextType>({} as DayContextType);
@@ -51,12 +51,12 @@ export function DayContextProvider({
   const getNewDietAction = useServerAction(getDietByIdAction);
 
   const isDietPending = getNewDietAction.isPending;
-	async function handleDateChange(date: Date, newDaysData?: getDayDTO[]) {
-		if (newDaysData) {
-			setDayData(getDay(date, newDaysData));
-		} else {
-			setDayData(getDay(date, daysData));
-		}
+  async function handleDateChange(date: Date, newDaysData?: getDayDTO[]) {
+    if (newDaysData) {
+      setDayData(getDay(date, newDaysData));
+    } else {
+      setDayData(getDay(date, daysData));
+    }
     setDate(date);
 
     if (date.getTime() < new Date(diet.diet.created).getTime()) {
@@ -64,7 +64,9 @@ export function DayContextProvider({
         if (!item.diet.expired) return false;
         const dietCreatedTimestamp = new Date(item.diet.created).getTime();
         const dietExpiredTimestamp = new Date(item.diet.expired).getTime();
-        const currentDietCreatedTimestamp = new Date(diet?.diet.created).getTime();
+        const currentDietCreatedTimestamp = new Date(
+          diet?.diet.created,
+        ).getTime();
         return (
           currentDietCreatedTimestamp <= dietExpiredTimestamp &&
           currentDietCreatedTimestamp > dietCreatedTimestamp
@@ -82,11 +84,11 @@ export function DayContextProvider({
       if (err) throw err;
       setDiet(newDiet);
     }
-	}
+  }
 
   async function onDateChange(date: Date) {
     if (date.getMonth() !== month.getMonth()) return await onMonthChange(date);
-		await handleDateChange(date);
+    await handleDateChange(date);
   }
 
   async function onMonthChange(date: Date) {
@@ -94,7 +96,10 @@ export function DayContextProvider({
     const [data, err] = await execute(date.getMonth());
     if (err) throw err;
     setDaysData(data);
-    await handleDateChange(new Date(date.getFullYear(), date.getMonth(), date.getDate()), data);
+    await handleDateChange(
+      new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+      data,
+    );
   }
 
   return (
@@ -110,7 +115,7 @@ export function DayContextProvider({
         isPending,
         setDayData,
         setDaysData,
-        isDietPending
+        isDietPending,
       }}
     >
       {children}
