@@ -76,7 +76,7 @@ After creating the client, grab the client ID and client secret from the client 
 
 And add them to your `.env.local` file
 
-### Auth Secret
+### Auth 
 
 For the auth to work, you need to generate Auth secret and add it to your `.env.local file`
 
@@ -90,6 +90,10 @@ For the deployment, you need to generate the secret and add it to the environmen
 
 Follow the gide on auth.js [docs](https://next-auth.js.org/deployment#vercel)
 
+Also, you need to add variable `AUTH_URL` to your `.env.local` file
+It needs to be the url of your site
+
+For local environment, it should be `http://localhost:4000`
 ### Fatsecret API
 
 For the meals search to work, you need to create a [fatsecret](https://platform.fatsecret.com/) account
