@@ -85,10 +85,12 @@ const fatsecretRepository = {
           Authorization: `Bearer ${token}`,
         },
       },
-    );
+    ).catch(() => {
+      throw new Error("Failed to connect to fatsecret API");
+    });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch meals");
+      throw new Error("Connected, but failed to fetch meals from fatsecret API");
     }
     const result = await response.json();
 
